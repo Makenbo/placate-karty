@@ -8,7 +8,7 @@
     "children":[],
     "name":"Default",
   },
-  "defaultScriptType":0,
+  "defaultScriptType":1,
   "Folders":[
     {"$GMFolder":"","%Name":"Animation Curves","folderPath":"folders/Animation Curves.yy","name":"Animation Curves","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Extensions","folderPath":"folders/Extensions.yy","name":"Extensions","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -26,7 +26,17 @@
     {"$GMFolder":"","%Name":"Tile Sets","folderPath":"folders/Tile Sets.yy","name":"Tile Sets","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Timelines","folderPath":"folders/Timelines.yy","name":"Timelines","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
-  "IncludedFiles":[],
+  "IncludedFiles":[
+    {"$GMIncludedFile":"","%Name":"arial.ttf","CopyToMask":-1,"filePath":"datafiles/external-fonts","name":"arial.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"arialbd.ttf","CopyToMask":-1,"filePath":"datafiles/external-fonts","name":"arialbd.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"arialbi.ttf","CopyToMask":-1,"filePath":"datafiles/external-fonts","name":"arialbi.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"ariali.ttf","CopyToMask":-1,"filePath":"datafiles/external-fonts","name":"ariali.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"ARIALN.TTF","CopyToMask":-1,"filePath":"datafiles/external-fonts","name":"ARIALN.TTF","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"ARIALNB.TTF","CopyToMask":-1,"filePath":"datafiles/external-fonts","name":"ARIALNB.TTF","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"ARIALNBI.TTF","CopyToMask":-1,"filePath":"datafiles/external-fonts","name":"ARIALNBI.TTF","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"ARIALNI.TTF","CopyToMask":-1,"filePath":"datafiles/external-fonts","name":"ARIALNI.TTF","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"ariblk.ttf","CopyToMask":-1,"filePath":"datafiles/external-fonts","name":"ariblk.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+  ],
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
@@ -34,6 +44,7 @@
   },
   "name":"draci-karty",
   "resources":[
+    {"id":{"name":"oController","path":"objects/oController/oController.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
   ],
   "resourceType":"GMProject",
