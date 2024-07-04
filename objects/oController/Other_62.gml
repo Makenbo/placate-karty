@@ -9,5 +9,6 @@ if (ds_map_find_value(async_load, "id") == getCSV)
 		var downloaded = ds_map_find_value(async_load, "sizeDownloaded")
 		var total = ds_map_find_value(async_load, "contentLength")
         statusText = "Downloaded " + downloaded + " out of " + total
+		loadedData = ds_map_find_value(async_load, "result")
     }
 }
