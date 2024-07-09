@@ -11,7 +11,7 @@ function DownloadCSV()
 		{
 			var url = file_text_readln(file)
 			var filename = "sheet" + string(i) + ".csv"
-			array_push(downloadLocations, http_get_file(url, filename))
+			http_get_file(url, filename)
 			toDownload++
 		}
 		

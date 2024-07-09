@@ -1,7 +1,7 @@
 //Better scaling
 //application_surface_draw_enable(false)
 
-// GUI
+// GUI -------------------------------------------------------------------------------
 #macro INTERACT_PRESS mouse_check_button_pressed(mb_left)
 #macro INTERACT_HOLD mouse_check_button(mb_left)
 #macro INTERACT_RELEASED mouse_check_button_released(mb_left)
@@ -25,25 +25,24 @@ draw_set_font(fntDescription)
 guiSurf = surface_create(1, 1)
 surface_free(guiSurf)
 
-// Main menu
+// Main menu -------------------------------------------------------------------------------
 mainMenu = [new Button("Collection",, function(){ChangeMenuState(MENU.COLLECTION)}),
 			new Button("Multiplayer"),
-			new Button("Download", "Downloads Google sheet to memory", DownloadCSV),
+			new Button("Download CSV", "Downloads Google sheet to memory", DownloadCSV),
+			new Button("Load CSV", "Loads the downloaded .csv file to Collection", CSVsToArray),
 			new Button("Exit",,function(){game_end()})
 		   ]
 
 sheetStateText = "Found ... files"
 toDownload = 0
 downloaded = 0
-downloadLocations = []
 
-// Collection
+cardDatabase = [] // Big boy
+
+// Collection -------------------------------------------------------------------------------
 collectionMenu = [	new Button("Load deck"),
 					new Button("Return to menu",, function(){ChangeMenuState(MENU.MAIN)})
 				 ]
-
-
-
 
 
 

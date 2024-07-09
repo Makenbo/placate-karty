@@ -39,6 +39,7 @@
     {"id":{"name":"oInterface","path":"objects/oInterface/oInterface.yy",},},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
     {"id":{"name":"ButtonStructs","path":"scripts/ButtonStructs/ButtonStructs.yy",},},
+    {"id":{"name":"CardDatabase","path":"scripts/CardDatabase/CardDatabase.yy",},},
     {"id":{"name":"Interface","path":"scripts/Interface/Interface.yy",},},
     {"id":{"name":"InterfaceUnused","path":"scripts/InterfaceUnused/InterfaceUnused.yy",},},
     {"id":{"name":"URLdownload","path":"scripts/URLdownload/URLdownload.yy",},},
