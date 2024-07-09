@@ -32,11 +32,14 @@ mainMenu = [new Button("Collection",, function(){ChangeMenuState(MENU.COLLECTION
 			new Button("Exit",,function(){game_end()})
 		   ]
 
-sheetStateText = "Idling"
+sheetStateText = "Found ... files"
+toDownload = 0
+downloaded = 0
+downloadLocations = []
 
 // Collection
-collectionMenu = [	new Button("Return to menu",, function(){ChangeMenuState(MENU.MAIN)}),
-					new Button("Load deck")
+collectionMenu = [	new Button("Load deck"),
+					new Button("Return to menu",, function(){ChangeMenuState(MENU.MAIN)})
 				 ]
 
 

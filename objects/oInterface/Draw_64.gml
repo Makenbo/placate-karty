@@ -11,7 +11,7 @@ if (!surface_exists(guiSurf))
 			break
 			
 		case MENU.COLLECTION:
-			ElementsSetPositions(collectionMenu,.3,.4)
+			ElementsSetPositions(collectionMenu,.1,.2)
 			RedrawElements(collectionMenu)
 			break
 	}
