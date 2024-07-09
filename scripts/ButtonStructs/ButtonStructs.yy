@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"ButtonStructs",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ButtonStructs",
+  "parent":{
+    "name":"draci-karty",
+    "path":"draci-karty.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
