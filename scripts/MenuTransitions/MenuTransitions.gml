@@ -7,6 +7,7 @@ function EnterCollection()
 		oInterface.cardRenders[i].Free()
 		delete oInterface.cardRenders[i]
 	}
+	array_resize(oInterface.cardRenders, 0)
 	
 	for (var i = 0; i < min(8, array_length(oInterface.sortingArray)); i++)
 	{

@@ -37,14 +37,13 @@ switch (uiState)
 		break
 		
 	case MENU.COLLECTION:
+		DrawCardSurfaces()
 		UpdateElements(collectionMenu)
 		UpdateElements(cardRenders)
-		
-		DrawCardSurfaces()
 		break
 }
 
-//Draw GUI surface
+// Draw GUI surface
 if (surface_exists(guiSurf)) draw_surface(guiSurf,0,0)
 
 window_set_cursor(cursorImage)

@@ -16,7 +16,8 @@ function Card(name_, cost_, image_, expansion_, type_, expNumber_, description_,
 #macro CARD_W 200
 #macro CARD_H 350
 #macro NAME_SCALE .6
-#macro DESCRIPTION_SCALE .5
+#macro COST_SCALE 1
+#macro DESCRIPTION_SCALE .4
 #macro OFF 10
 
 enum CARD_STATE
@@ -44,35 +45,76 @@ function CardRenderer(id_, scale_ = 1) : GuiElement() constructor
 	holdState = CARD_STATE.STATIC
 	prevHoldState = holdState
 	
+	onTop = false
+	
 	function Draw(singleRedraw = false)
 	{
 		if (!surface_exists(surface))
-			surface = surface_create(width * scale, height * scale)
+			surface = surface_create(width, height)
 		
 		if (singleRedraw)
 		{
-			gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha) // Somehow fixes text edges
+			gpu_set_blendmode_ext(bm_src_alpha, bm_one) // Somehow fixes text edges
 			draw_set_halign(fa_center)
 		}
 		
 		surface_set_target(surface)
 			
-			draw_set_color(c_white)
-			draw_set_alpha(.2)
-			draw_rectangle(0,0,width,height,false)
-			draw_set_alpha(1)
+			//draw_set_color(c_white)
+			//draw_set_alpha(1)
+			//draw_rectangle(0,0,width,height,false)
+			//draw_set_alpha(1)
+			draw_clear(c_dkgray)
 		
 			var fontSize = font_get_size(fntDescription)
 		
+			// Name
 			draw_set_valign(fa_top)
-			draw_text_ext_transformed(	width*.5, height*.05, card.name,
-										fontSize + OFF, CARD_W * 2 - PADDING*5,
+			draw_text_ext_transformed(	width *.4, height*.05, card.name,
+										fontSize + OFF, CARD_W * 2 - PADDING*6,
 										scale*NAME_SCALE, scale*NAME_SCALE, 0)	
-			
+			// Cost
+			draw_set_halign(fa_right)
+			draw_set_color(c_aqua)
+			draw_text_ext_transformed(	width - PADDING/2, height / PADDING/2, card.cost,
+										fontSize + OFF, CARD_W * 2 - PADDING*6,
+										scale*COST_SCALE, scale*COST_SCALE, 0)
+			// Strength
+			draw_set_halign(fa_left)
 			draw_set_valign(fa_middle)
-			draw_text_ext_transformed(	width*.5, height*.5, card.description,
+			draw_set_color(c_red)
+			draw_text_ext_transformed(	width*.1, height*.9, card.strength,
+										fontSize + OFF, CARD_W * 2 - PADDING*6,
+										scale*COST_SCALE, scale*COST_SCALE, 0)
+			
+			// Description
+			draw_set_halign(fa_center)
+			draw_set_color(c_white)
+			draw_text_ext_transformed(	width*.45, height*.75, card.description,
+										fontSize + OFF, CARD_W * 2 * .9,
+										scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 0)
+			// Type
+			draw_text_ext_transformed(	width*.5, height*.6, card.type,
 										fontSize + OFF, CARD_W * 2 - PADDING,
 										scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 0)
+			// IDs
+			draw_text_ext_transformed(	width*.85, height*.6, card.expNumber,
+										fontSize + OFF, CARD_W * 2 - PADDING,
+										scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 0)
+			draw_text_ext_transformed(	width*.15, height*.6, card.expansion,
+										fontSize + OFF, CARD_W * 2 - PADDING,
+										scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 0)
+			// Author
+			draw_text_ext_transformed(	width*.9, height*.75, card.author,
+										fontSize + OFF, CARD_W * 2 - PADDING,
+										scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 90)
+			// Rarity
+			draw_set_color(c_yellow)
+			draw_text_ext_transformed(	width*.6, height*.9, card.rarity,
+										fontSize + OFF, CARD_W * 2 - PADDING,
+										scale*NAME_SCALE, scale*NAME_SCALE, 0)
+										
+			draw_set_color(c_white)
 			
 		surface_reset_target()
 		
@@ -109,14 +151,16 @@ function CardRenderer(id_, scale_ = 1) : GuiElement() constructor
 			switch (holdState)
 			{
 				case CARD_STATE.HOVERED:
+					onTop = true
 					ChangeScale(1.6)
 					posClamped = true
 					break
 					
 				case CARD_STATE.STATIC:
+					onTop = false
 					ChangeScale(1)
 					posClamped = false
-					break					
+					break
 			}
 		}
 	}
@@ -133,7 +177,7 @@ function CardRenderer(id_, scale_ = 1) : GuiElement() constructor
 		width = CARD_W * scale
 		height = CARD_H * scale
 		surface_free(surface)
-		surface = surface_create(width * scale, height * scale)
+		surface = surface_create(width, height)
 		Draw(true)
 	}
 	
@@ -159,7 +203,7 @@ function CardRenderer(id_, scale_ = 1) : GuiElement() constructor
 
 function RedrawCards()
 {
-	gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha) // Somehow fixes text edges
+	gpu_set_blendmode_ext(bm_src_alpha, bm_one) // Somehow fixes text edges
 	draw_set_halign(fa_center)
 	draw_set_valign(fa_middle)
 	for (var i = 0; i < array_length(oInterface.cardRenders); i++)
@@ -171,12 +215,20 @@ function RedrawCards()
 
 function DrawCardSurfaces()
 {
+	var drawOnTop = []
 	for (var i = 0; i < array_length(oInterface.cardRenders); i++)
 	{
 		var cardRenderer = oInterface.cardRenders[i]
 		
-		//if (surface_exists(cardRenderer.surface))
-			draw_surface(cardRenderer.surface, cardRenderer.clampedX-cardRenderer.width/2, cardRenderer.clampedY-cardRenderer.height/2)
+		if (cardRenderer.onTop) array_push(drawOnTop, cardRenderer)
+		else draw_surface(cardRenderer.surface, cardRenderer.clampedX-cardRenderer.width/2, cardRenderer.clampedY-cardRenderer.height/2)
+	}
+	
+	for (var i = 0; i < array_length(drawOnTop); i++)
+	{
+		var cardRenderer = drawOnTop[i]
+		
+		draw_surface(cardRenderer.surface, cardRenderer.clampedX-cardRenderer.width/2, cardRenderer.clampedY-cardRenderer.height/2)
 	}
 }
 
@@ -184,6 +236,12 @@ function CSVsToArray()
 {
 	ds_map_clear(oInterface.cardDatabase)
 	array_resize(oInterface.sortingArray, 0)
+	for (var i = 0; i < array_length(oInterface.cardRenders); i++)
+	{
+		oInterface.cardRenders[i].Free()
+		delete oInterface.cardRenders[i]
+	}
+	array_resize(oInterface.cardRenders, 0)
 	
 	for (var i = 0; file_exists($"sheet{i}.csv"); i++)
 	{

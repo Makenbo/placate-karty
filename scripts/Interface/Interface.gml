@@ -1,8 +1,8 @@
-function RedrawElements(elements, clear = false)
+function RedrawElements(elements, clear = true)
 {
 	surface_set_target(oInterface.guiSurf)
 	
-		if (clear) draw_clear_alpha(c_white, 0)
+		//if (clear) draw_clear_alpha(c_dkgray, 1)
 
 		gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha) // Somehow fixes text edges
 		draw_set_halign(fa_center)

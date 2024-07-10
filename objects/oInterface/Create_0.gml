@@ -41,8 +41,8 @@ downloaded = 0
 downloadLocations = []
 
 // Card Database
-cardDatabase = ds_map_create() // Big boy
-sortingArray = [] // Sorting Big boy
+cardDatabase = ds_map_create()	// Big boy
+sortingArray = []				// Sorting Big boy
 
 // Collection -------------------------------------------------------------------------------
 collectionMenu = [	new Button("Load deck"),
