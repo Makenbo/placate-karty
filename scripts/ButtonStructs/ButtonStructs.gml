@@ -31,31 +31,49 @@ enum ELEMENT_DIR
 	HORIZONTAL
 }
 
-function ElementsSetPositions(elements, multX = .5, multY = .5, alignType = ALIGN.MIDDLE, dir = ELEMENT_DIR.VERTICAL, padding = PADDING)
+function ElementsSetPositions(elements, multX = .5, multY = .5, dir = ELEMENT_DIR.VERTICAL, alignType = ALIGN.MIDDLE, maxPerLine = -1, padding = PADDING)
 {
-	for (var i = 0; i < array_length(elements); i++)
+	var elementAmount = array_length(elements)
+	var lineLen = elementAmount
+	if (maxPerLine != -1) lineLen = maxPerLine
+	
+	for (var j = 0; j < ceil(elementAmount / lineLen); j++)
 	{
-		var xx, yy;
-		switch (alignType)
+		for (var i = 0; i < lineLen; i++)
 		{
-			case ALIGN.MIDDLE:
-				xx = GUI_W - (elements[i].width / 2)
-				yy = GUI_H - (elements[i].height / 2)
-				break
+			var xx = GUI_W
+			var yy = GUI_H
+		
+			xx *= multX
+			yy *= multY
+		
+			switch (alignType)
+			{
+				case ALIGN.MIDDLE:
+					xx -= elements[i].width / 2
+					yy -= elements[i].height / 2
+					break
+				
+				case ALIGN.LEFT:
+					break
+			}
+		
+			switch (dir)
+			{
+				case ELEMENT_DIR.VERTICAL:
+					yy += (elements[i].height + padding) * i
+					xx += (elements[i].width + padding) * j
+					break
+				
+				case ELEMENT_DIR.HORIZONTAL:
+					xx += (elements[i].width + padding) * i
+					yy += (elements[i].height + padding) * j
+					break
+			}
+		
+			elements[i + lineLen*j].xPos = xx
+			elements[i + lineLen*j].yPos = yy
 		}
-		
-		xx *= multX
-		yy *= multY
-		
-		switch (dir)
-		{
-			case ELEMENT_DIR.VERTICAL:
-				yy += (elements[i].height + padding) * i
-				break
-		}
-		
-		elements[i].xPos = xx
-		elements[i].yPos = yy
 	}
 }
 
@@ -75,10 +93,13 @@ function Button(name_ = "temp", description_ = "Temp description", func_ = funct
 		
 		if (yPosShifted > -height and yPosShifted < GUI_H)
 		{
-			draw_set_color(c_yellow)
-		
 			//Draw general button
+			//draw_set_color(c_black)
+			//draw_rectangle(round(xPos),round(yPosShifted),round(xPos+width),round(yPosShifted+height),false)
+		
+			draw_set_color(c_yellow)
 			draw_rectangle(round(xPos),round(yPosShifted),round(xPos+width),round(yPosShifted+height),true)
+			
 			var centerX = xPos + (width * .5)
 			var centerY = yPosShifted + (height * .5)
 			draw_set_color(c_white)
@@ -95,8 +116,8 @@ function Button(name_ = "temp", description_ = "Temp description", func_ = funct
 			if (point_in_rectangle(mX,mY,xPos,yPosShifted,xPos+width,yPosShifted+height))
 			{
 				//Change curor type
-				if (window_get_cursor() != cr_handpoint)
-					window_set_cursor(cr_handpoint)
+				if (oInterface.cursorImage != cr_handpoint)
+					oInterface.cursorImage = cr_handpoint
 			
 				//Hover indicator
 				draw_set_alpha(.2)
@@ -175,8 +196,8 @@ function Slider(minNum_,maxNum_,length_,name_ = "temp",description_ = "Descripti
 			if (point_in_rectangle(mX,mY,xPos,yPosShifted,xPos+width,yPosShifted+height) or sliderActive)
 			{
 				//Change curor type
-				if (window_get_cursor() != cr_size_we)
-					window_set_cursor(cr_size_we)
+				if (oInterface.cursorImage != cr_size_we)
+					oInterface.cursorImage = cr_size_we
 				
 				//Hover indicator
 				draw_set_alpha(.2)

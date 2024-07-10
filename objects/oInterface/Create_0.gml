@@ -25,24 +25,34 @@ draw_set_font(fntDescription)
 guiSurf = surface_create(1, 1)
 surface_free(guiSurf)
 
+cursorImage = cr_default
+
 // Main menu -------------------------------------------------------------------------------
-mainMenu = [new Button("Collection",, function(){ChangeMenuState(MENU.COLLECTION)}),
+mainMenu = [new Button("Collection",, EnterCollection),
 			new Button("Multiplayer"),
 			new Button("Download CSV", "Downloads Google sheet to memory", DownloadCSV),
-			new Button("Load CSV", "Loads the downloaded .csv file to Collection", CSVsToArray),
 			new Button("Exit",,function(){game_end()})
 		   ]
 
+// Sheet sync
 sheetStateText = "Found ... files"
 toDownload = 0
 downloaded = 0
+downloadLocations = []
 
-cardDatabase = [] // Big boy
+// Card Database
+cardDatabase = ds_map_create() // Big boy
+sortingArray = [] // Sorting Big boy
 
 // Collection -------------------------------------------------------------------------------
 collectionMenu = [	new Button("Load deck"),
 					new Button("Return to menu",, function(){ChangeMenuState(MENU.MAIN)})
 				 ]
+				 
+cardRenders = []
+
+// Load CSVs from files
+CSVsToArray()
 
 
 

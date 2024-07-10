@@ -4,5 +4,7 @@ if (array_contains(downloadLocations, ds_map_find_value(async_load, "id")))
     {
 		downloaded++
 		sheetStateText = $"Downloaded {downloaded}/{toDownload}"
+		
+		if (downloaded == toDownload) CSVsToArray()
     }
 }

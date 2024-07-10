@@ -42,6 +42,7 @@
     {"id":{"name":"CardDatabase","path":"scripts/CardDatabase/CardDatabase.yy",},},
     {"id":{"name":"Interface","path":"scripts/Interface/Interface.yy",},},
     {"id":{"name":"InterfaceUnused","path":"scripts/InterfaceUnused/InterfaceUnused.yy",},},
+    {"id":{"name":"MenuTransitions","path":"scripts/MenuTransitions/MenuTransitions.yy",},},
     {"id":{"name":"URLdownload","path":"scripts/URLdownload/URLdownload.yy",},},
     {"id":{"name":"sTesting","path":"sprites/sTesting/sTesting.yy",},},
   ],

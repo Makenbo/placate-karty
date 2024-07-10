@@ -11,8 +11,10 @@ if (!surface_exists(guiSurf))
 			break
 			
 		case MENU.COLLECTION:
-			ElementsSetPositions(collectionMenu,.1,.2)
+			ElementsSetPositions(collectionMenu,.03,.2,,ALIGN.LEFT)
 			RedrawElements(collectionMenu)
+			ElementsSetPositions(cardRenders,.3,.25, ELEMENT_DIR.HORIZONTAL, ALIGN.LEFT, 4)
+			RedrawCards()
 			break
 	}
 }
@@ -36,8 +38,13 @@ switch (uiState)
 		
 	case MENU.COLLECTION:
 		UpdateElements(collectionMenu)
+		UpdateElements(cardRenders)
+		
+		DrawCardSurfaces()
 		break
 }
 
 //Draw GUI surface
 if (surface_exists(guiSurf)) draw_surface(guiSurf,0,0)
+
+window_set_cursor(cursorImage)
