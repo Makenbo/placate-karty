@@ -95,7 +95,7 @@ function CardRenderer(id_, scale_ = 1) : GuiElement() constructor
 										scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 0)
 			// Type
 			draw_text_ext_transformed(	width*.5, height*.6, card.type,
-										fontSize + OFF, CARD_W * 2 - PADDING,
+										fontSize + OFF, CARD_W * 2 - PADDING*5,
 										scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 0)
 			// IDs
 			draw_text_ext_transformed(	width*.85, height*.6, card.expNumber,
@@ -208,7 +208,7 @@ function RedrawCards()
 	draw_set_valign(fa_middle)
 	for (var i = 0; i < array_length(oInterface.cardRenders); i++)
 	{
-		cardRenders[i].Draw()
+		oInterface.cardRenders[i].Draw()
 	}
 	gpu_set_blendmode_ext(bm_src_alpha, bm_inv_src_alpha)
 }
@@ -236,12 +236,7 @@ function CSVsToArray()
 {
 	ds_map_clear(oInterface.cardDatabase)
 	array_resize(oInterface.sortingArray, 0)
-	for (var i = 0; i < array_length(oInterface.cardRenders); i++)
-	{
-		oInterface.cardRenders[i].Free()
-		delete oInterface.cardRenders[i]
-	}
-	array_resize(oInterface.cardRenders, 0)
+	FreeCardRenderer()
 	
 	for (var i = 0; file_exists($"sheet{i}.csv"); i++)
 	{
@@ -263,9 +258,42 @@ function CSVsToArray()
 			var card = new Card(name, cost, image, expansion, type, expNumber, description, author, strength, rarity)
 			ds_map_add(oInterface.cardDatabase, id_, card)
 			array_push(oInterface.sortingArray, card)
-			show_debug_message(id_)
 		}
 	}
 	
-	oInterface.sheetStateText = $"{array_length(oInterface.sortingArray)} cards loaded"
+	totalCardAmount = array_length(oInterface.sortingArray)
+	oInterface.sheetStateText = $"{totalCardAmount} cards loaded"
 }
+
+function DrawCardCollection()
+{
+	ElementsSetPositions(oInterface.cardRenders, .27, .25, ELEMENT_DIR.HORIZONTAL, ALIGN.LEFT, 4)
+	RedrawCards()
+}
+
+function SortCardsByCost()
+{
+	var sortFunc = function(a, b)
+	{
+		return a.cost - b.cost
+	}
+	
+	array_sort(oInterface.sortingArray, sortFunc)
+	UpdateCollection(RENDERER.REFRESH)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

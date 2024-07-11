@@ -41,6 +41,9 @@ function ElementsSetPositions(elements, multX = .5, multY = .5, dir = ELEMENT_DI
 	{
 		for (var i = 0; i < lineLen; i++)
 		{
+			var arrPos = i + lineLen*j
+			if (arrPos >= array_length(elements)) break
+			
 			var xx = GUI_W
 			var yy = GUI_H
 		
@@ -50,8 +53,8 @@ function ElementsSetPositions(elements, multX = .5, multY = .5, dir = ELEMENT_DI
 			switch (alignType)
 			{
 				case ALIGN.MIDDLE:
-					xx -= elements[i].width / 2
-					yy -= elements[i].height / 2
+					xx -= elements[arrPos].width / 2
+					yy -= elements[arrPos].height / 2
 					break
 				
 				case ALIGN.LEFT:
@@ -61,23 +64,23 @@ function ElementsSetPositions(elements, multX = .5, multY = .5, dir = ELEMENT_DI
 			switch (dir)
 			{
 				case ELEMENT_DIR.VERTICAL:
-					yy += (elements[i].height + padding) * i
-					xx += (elements[i].width + padding) * j
+					yy += (elements[arrPos].height + padding) * i
+					xx += (elements[arrPos].width + padding) * j
 					break
 				
 				case ELEMENT_DIR.HORIZONTAL:
-					xx += (elements[i].width + padding) * i
-					yy += (elements[i].height + padding) * j
+					xx += (elements[arrPos].width + padding) * i
+					yy += (elements[arrPos].height + padding) * j
 					break
 			}
 		
-			elements[i + lineLen*j].xPos = xx
-			elements[i + lineLen*j].yPos = yy
+			elements[arrPos].xPos = xx
+			elements[arrPos].yPos = yy
 		}
 	}
 }
 
-function Button(name_ = "temp", description_ = "Temp description", func_ = function(){}, width_ = -1) : GuiElement() constructor
+function Button(name_ = "temp", description_ = "", func_ = function(){}, width_ = -1) : GuiElement() constructor
 {
 	variable = false
 	name = name_

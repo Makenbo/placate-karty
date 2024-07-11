@@ -28,7 +28,7 @@ surface_free(guiSurf)
 cursorImage = cr_default
 
 // Main menu -------------------------------------------------------------------------------
-mainMenu = [new Button("Collection",, EnterCollection),
+mainMenu = [new Button("Collection",, function(){UpdateCollection(RENDERER.ENTER_COLLECTION)}),
 			new Button("Multiplayer"),
 			new Button("Download CSV", "Downloads Google sheet to memory", DownloadCSV),
 			new Button("Exit",,function(){game_end()})
@@ -39,15 +39,26 @@ sheetStateText = "Found ... files"
 toDownload = 0
 downloaded = 0
 downloadLocations = []
+totalCardAmount = 0
 
 // Card Database
 cardDatabase = ds_map_create()	// Big boy
 sortingArray = []				// Sorting Big boy
 
 // Collection -------------------------------------------------------------------------------
-collectionMenu = [	new Button("Load deck"),
-					new Button("Return to menu",, function(){ChangeMenuState(MENU.MAIN)})
+collectionMenu = [	new Button("Return to menu",, function(){ChangeMenuState(MENU.MAIN)}),
+					new Button("Load deck")
 				 ]
+				 
+collectionFilters = [	new Button("Sort by cost",, SortCardsByCost)
+						//new Button("Return to menu",, function(){ChangeMenuState(MENU.MAIN)})
+					]
+				 
+pageTurner = [	new Button("<",, function(){UpdateCollection(RENDERER.TURN_LEFT)}),
+				new Button(">",, function(){UpdateCollection(RENDERER.TURN_RIGHT)})
+			 ]
+#macro cardsPerPage 8
+page = 0
 				 
 cardRenders = []
 

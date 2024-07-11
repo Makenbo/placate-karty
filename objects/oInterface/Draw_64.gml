@@ -11,13 +11,19 @@ if (!surface_exists(guiSurf))
 			break
 			
 		case MENU.COLLECTION:
-			ElementsSetPositions(collectionMenu,.03,.2,,ALIGN.LEFT)
+			ElementsSetPositions(collectionMenu,.015,.1,,ALIGN.LEFT)
+			ElementsSetPositions(pageTurner, .015, .8, ELEMENT_DIR.HORIZONTAL,ALIGN.LEFT)
+			ElementsSetPositions(collectionFilters, .015, .6, ELEMENT_DIR.HORIZONTAL,ALIGN.LEFT)
 			RedrawElements(collectionMenu)
-			ElementsSetPositions(cardRenders,.3,.25, ELEMENT_DIR.HORIZONTAL, ALIGN.LEFT, 4)
-			RedrawCards()
+			RedrawElements(pageTurner)
+			RedrawElements(collectionFilters)
+			DrawCardCollection()
 			break
 	}
 }
+
+// Draw static GUI surface
+if (surface_exists(guiSurf)) draw_surface(guiSurf,0,0)
 
 //GUI checking for updates
 switch (uiState)
@@ -39,11 +45,12 @@ switch (uiState)
 	case MENU.COLLECTION:
 		DrawCardSurfaces()
 		UpdateElements(collectionMenu)
+		UpdateElements(collectionFilters)
+		UpdateElements(pageTurner)
 		UpdateElements(cardRenders)
+		draw_set_halign(fa_center)
+		draw_text(GUI_W * .05, GUI_H * .75, $"Page {page}")
 		break
 }
-
-// Draw GUI surface
-if (surface_exists(guiSurf)) draw_surface(guiSurf,0,0)
 
 window_set_cursor(cursorImage)
