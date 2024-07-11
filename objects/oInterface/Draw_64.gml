@@ -48,6 +48,7 @@ switch (uiState)
 		UpdateElements(collectionFilters)
 		UpdateElements(pageTurner)
 		UpdateElements(cardRenders)
+		UpdateElements(deckRenders)
 		draw_set_halign(fa_center)
 		draw_text(GUI_W * .05, GUI_H * .75, $"Page {page}")
 		break

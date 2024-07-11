@@ -61,6 +61,7 @@ pageTurner = [	new Button("<",, function(){UpdateCollection(RENDERER.TURN_LEFT)}
 page = 0
 				 
 cardRenders = []
+deckRenders = []
 
 // Load CSVs from files
 CSVsToArray()

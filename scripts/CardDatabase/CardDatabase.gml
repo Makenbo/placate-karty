@@ -15,10 +15,13 @@ function Card(name_, cost_, image_, expansion_, type_, expNumber_, description_,
 
 #macro CARD_W 200
 #macro CARD_H 350
+#macro COMPACT_HEIGHT 50
 #macro NAME_SCALE .6
 #macro COST_SCALE 1
 #macro DESCRIPTION_SCALE .4
-#macro OFF 10
+#macro COMPACT_NAME_SCALE .7
+#macro HOVERED_SCALE 1.6
+#macro LINE_OFF 10
 
 enum CARD_STATE
 {
@@ -27,25 +30,114 @@ enum CARD_STATE
 	HELD
 }
 
-function CardRenderer(id_, scale_ = 1) : GuiElement() constructor
+enum CARD_DRAW_TYPE
+{
+	FULL,
+	COMPACT,
+	BACKFACE
+}
+
+enum CARD_INTERACTION
+{
+	ADD_TO_DECK,
+	REMOVE_FROM_DECK
+}
+
+function CardRenderer(id_, interaction_ = CARD_INTERACTION.ADD_TO_DECK, drawType_ = CARD_DRAW_TYPE.FULL, scale_ = .9) : GuiElement() constructor
 {
 	idd = id_
 	scale = scale_
-	card = ds_map_find_value(oInterface.cardDatabase, id_)
+	defaultScale = scale
+	card = ds_map_find_value(oInterface.cardDatabase, idd)
+	
+	holdState = CARD_STATE.STATIC
+	prevHoldState = holdState
+	drawType = drawType_
+	compactDraw = drawType == CARD_DRAW_TYPE.COMPACT
+	interaction = interaction_
 	
 	width = CARD_W * scale
-	height = CARD_H * scale
+	height = compactDraw ? COMPACT_HEIGHT * scale : CARD_H * scale
 	
-	surface = surface_create(width * scale, height * scale)
+	surface = surface_create(width, height)
 	
 	posClamped = false // Forces the surface to render inside the view
 	clampedX = xPos
 	clampedY = yPos
 	
-	holdState = CARD_STATE.STATIC
-	prevHoldState = holdState
-	
 	onTop = false
+	
+	function DrawCardFull()
+	{
+		//draw_set_color(c_white)
+		//draw_set_alpha(1)
+		//draw_rectangle(0,0,width,height,false)
+		//draw_set_alpha(1)
+		draw_clear(c_dkgray)
+		
+		var fontSize = font_get_size(fntDescription)
+		
+		// Name
+		draw_set_valign(fa_top)
+		draw_text_ext_transformed(	width *.4, height*.05, card.name,
+									fontSize + LINE_OFF, CARD_W * 2 - PADDING*6,
+									scale*NAME_SCALE, scale*NAME_SCALE, 0)	
+		// Cost
+		draw_set_halign(fa_right)
+		draw_set_color(c_aqua)
+		draw_text_ext_transformed(	width*.9, height*.05, card.cost,
+									fontSize + LINE_OFF, CARD_W * 2 - PADDING*6,
+									scale*COST_SCALE, scale*COST_SCALE, 0)
+		// Strength
+		draw_set_halign(fa_left)
+		draw_set_valign(fa_middle)
+		draw_set_color(c_red)
+		draw_text_ext_transformed(	width*.1, height*.9, card.strength,
+									fontSize + LINE_OFF, CARD_W * 2 - PADDING*6,
+									scale*COST_SCALE, scale*COST_SCALE, 0)
+			
+		// Description
+		draw_set_halign(fa_center)
+		draw_set_color(c_white)
+		draw_text_ext_transformed(	width*.45, height*.75, card.description,
+									fontSize + LINE_OFF, CARD_W * 2 * .9,
+									scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 0)
+		// Type
+		draw_text_ext_transformed(	width*.5, height*.6, card.type,
+									fontSize + LINE_OFF, CARD_W * 2 - PADDING*5,
+									scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 0)
+		// IDs
+		draw_text_ext_transformed(	width*.85, height*.6, card.expNumber,
+									fontSize + LINE_OFF, CARD_W * 2 - PADDING,
+									scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 0)
+		draw_text_ext_transformed(	width*.15, height*.6, card.expansion,
+									fontSize + LINE_OFF, CARD_W * 2 - PADDING,
+									scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 0)
+		// Author
+		draw_text_ext_transformed(	width*.9, height*.75, card.author,
+									fontSize + LINE_OFF, CARD_W * 2 - PADDING,
+									scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 90)
+		// Rarity
+		draw_set_color(c_yellow)
+		draw_text_ext_transformed(	width*.6, height*.9, card.rarity,
+									fontSize + LINE_OFF, CARD_W * 2 - PADDING,
+									scale*NAME_SCALE, scale*NAME_SCALE, 0)
+										
+		draw_set_color(c_white)
+	}
+	
+	function DrawCardCompact()
+	{
+		var fontSize = font_get_size(fntDescription)
+		draw_clear(c_dkgray)
+		draw_text_ext_transformed(	width *.5, height*.5, card.name,
+									fontSize + LINE_OFF, CARD_W * 2 - PADDING*6,
+									scale * COMPACT_NAME_SCALE, scale * COMPACT_NAME_SCALE, 0)
+	}
+	
+	function DrawCardBackface()
+	{
+	}
 	
 	function Draw(singleRedraw = false)
 	{
@@ -60,61 +152,17 @@ function CardRenderer(id_, scale_ = 1) : GuiElement() constructor
 		
 		surface_set_target(surface)
 			
-			//draw_set_color(c_white)
-			//draw_set_alpha(1)
-			//draw_rectangle(0,0,width,height,false)
-			//draw_set_alpha(1)
-			draw_clear(c_dkgray)
-		
-			var fontSize = font_get_size(fntDescription)
-		
-			// Name
-			draw_set_valign(fa_top)
-			draw_text_ext_transformed(	width *.4, height*.05, card.name,
-										fontSize + OFF, CARD_W * 2 - PADDING*6,
-										scale*NAME_SCALE, scale*NAME_SCALE, 0)	
-			// Cost
-			draw_set_halign(fa_right)
-			draw_set_color(c_aqua)
-			draw_text_ext_transformed(	width - PADDING/2, height / PADDING/2, card.cost,
-										fontSize + OFF, CARD_W * 2 - PADDING*6,
-										scale*COST_SCALE, scale*COST_SCALE, 0)
-			// Strength
-			draw_set_halign(fa_left)
-			draw_set_valign(fa_middle)
-			draw_set_color(c_red)
-			draw_text_ext_transformed(	width*.1, height*.9, card.strength,
-										fontSize + OFF, CARD_W * 2 - PADDING*6,
-										scale*COST_SCALE, scale*COST_SCALE, 0)
-			
-			// Description
-			draw_set_halign(fa_center)
-			draw_set_color(c_white)
-			draw_text_ext_transformed(	width*.45, height*.75, card.description,
-										fontSize + OFF, CARD_W * 2 * .9,
-										scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 0)
-			// Type
-			draw_text_ext_transformed(	width*.5, height*.6, card.type,
-										fontSize + OFF, CARD_W * 2 - PADDING*5,
-										scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 0)
-			// IDs
-			draw_text_ext_transformed(	width*.85, height*.6, card.expNumber,
-										fontSize + OFF, CARD_W * 2 - PADDING,
-										scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 0)
-			draw_text_ext_transformed(	width*.15, height*.6, card.expansion,
-										fontSize + OFF, CARD_W * 2 - PADDING,
-										scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 0)
-			// Author
-			draw_text_ext_transformed(	width*.9, height*.75, card.author,
-										fontSize + OFF, CARD_W * 2 - PADDING,
-										scale*DESCRIPTION_SCALE, scale*DESCRIPTION_SCALE, 90)
-			// Rarity
-			draw_set_color(c_yellow)
-			draw_text_ext_transformed(	width*.6, height*.9, card.rarity,
-										fontSize + OFF, CARD_W * 2 - PADDING,
-										scale*NAME_SCALE, scale*NAME_SCALE, 0)
-										
-			draw_set_color(c_white)
+			switch (drawType)
+			{
+				case CARD_DRAW_TYPE.FULL:
+					DrawCardFull()
+					break
+					
+				case CARD_DRAW_TYPE.COMPACT:
+					if (holdState == CARD_STATE.HOVERED) DrawCardFull()
+					else DrawCardCompact()
+					break
+			}
 			
 		surface_reset_target()
 		
@@ -126,19 +174,28 @@ function CardRenderer(id_, scale_ = 1) : GuiElement() constructor
 	{
 		UpdatePosition(posClamped)
 		
-		if (point_in_rectangle(mX,mY,xPos-width/2/scale,yPos-height/2/scale,xPos+width/2/scale,yPos+height/2/scale))
+		var realHeight = compactDraw ? COMPACT_HEIGHT * defaultScale : CARD_H * defaultScale
+		var realWidth = CARD_W * defaultScale
+		
+		if (point_in_rectangle(mX,mY,xPos-realWidth/2,yPos-realHeight/2,xPos+realWidth/2,yPos+realHeight/2))
 		{
-			holdState = CARD_STATE.HOVERED
-			
-			//Change curor type
+			//Change cursor type
 			if (oInterface.cursorImage != cr_handpoint)
 				oInterface.cursorImage = cr_handpoint
+			
+			holdState = CARD_STATE.HOVERED
 			
 			// Hover
 			draw_set_color(c_white)
 			draw_set_alpha(.5)
 			draw_rectangle(clampedX-width/2,clampedY-height/2,clampedX+width/2,clampedY+height/2,false)
 			draw_set_alpha(1)
+			
+			if (INTERACT_PRESS)
+			{
+				array_push(oInterface.deckRenders, new CardRenderer(idd, CARD_INTERACTION.REMOVE_FROM_DECK, CARD_DRAW_TYPE.COMPACT))
+				DrawCollectionDeck()
+			}
 		}
 		else
 		{
@@ -152,13 +209,13 @@ function CardRenderer(id_, scale_ = 1) : GuiElement() constructor
 			{
 				case CARD_STATE.HOVERED:
 					onTop = true
-					ChangeScale(1.6)
+					ChangeScale(HOVERED_SCALE)
 					posClamped = true
 					break
 					
 				case CARD_STATE.STATIC:
 					onTop = false
-					ChangeScale(1)
+					ChangeScale(defaultScale)
 					posClamped = false
 					break
 			}
@@ -175,7 +232,7 @@ function CardRenderer(id_, scale_ = 1) : GuiElement() constructor
 	{
 		scale = scale_
 		width = CARD_W * scale
-		height = CARD_H * scale
+		height = compactDraw and holdState == CARD_STATE.STATIC ? COMPACT_HEIGHT * scale : CARD_H * scale
 		surface_free(surface)
 		surface = surface_create(width, height)
 		Draw(true)
@@ -201,14 +258,14 @@ function CardRenderer(id_, scale_ = 1) : GuiElement() constructor
 	}
 }
 
-function RedrawCards()
+function RedrawCards(elements)
 {
 	gpu_set_blendmode_ext(bm_src_alpha, bm_one) // Somehow fixes text edges
 	draw_set_halign(fa_center)
 	draw_set_valign(fa_middle)
-	for (var i = 0; i < array_length(oInterface.cardRenders); i++)
+	for (var i = 0; i < array_length(elements); i++)
 	{
-		oInterface.cardRenders[i].Draw()
+		elements[i].Draw()
 	}
 	gpu_set_blendmode_ext(bm_src_alpha, bm_inv_src_alpha)
 }
@@ -219,6 +276,13 @@ function DrawCardSurfaces()
 	for (var i = 0; i < array_length(oInterface.cardRenders); i++)
 	{
 		var cardRenderer = oInterface.cardRenders[i]
+		
+		if (cardRenderer.onTop) array_push(drawOnTop, cardRenderer)
+		else draw_surface(cardRenderer.surface, cardRenderer.clampedX-cardRenderer.width/2, cardRenderer.clampedY-cardRenderer.height/2)
+	}
+	for (var i = 0; i < array_length(oInterface.deckRenders); i++)
+	{
+		var cardRenderer = oInterface.deckRenders[i]
 		
 		if (cardRenderer.onTop) array_push(drawOnTop, cardRenderer)
 		else draw_surface(cardRenderer.surface, cardRenderer.clampedX-cardRenderer.width/2, cardRenderer.clampedY-cardRenderer.height/2)
@@ -267,8 +331,15 @@ function CSVsToArray()
 
 function DrawCardCollection()
 {
-	ElementsSetPositions(oInterface.cardRenders, .27, .25, ELEMENT_DIR.HORIZONTAL, ALIGN.LEFT, 4)
-	RedrawCards()
+	ElementsSetPositions(oInterface.cardRenders, .26, .25, ELEMENT_DIR.HORIZONTAL, ALIGN.LEFT, 4, 8)
+	RedrawCards(oInterface.cardRenders)
+	DrawCollectionDeck()
+}
+
+function DrawCollectionDeck()
+{
+	ElementsSetPositions(oInterface.deckRenders, .9, .07, ELEMENT_DIR.VERTICAL, ALIGN.LEFT,,, 0)
+	RedrawCards(oInterface.deckRenders)
 }
 
 function SortCardsByCost()

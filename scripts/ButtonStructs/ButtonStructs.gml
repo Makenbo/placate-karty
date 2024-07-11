@@ -31,9 +31,9 @@ enum ELEMENT_DIR
 	HORIZONTAL
 }
 
-function ElementsSetPositions(elements, multX = .5, multY = .5, dir = ELEMENT_DIR.VERTICAL, alignType = ALIGN.MIDDLE, maxPerLine = -1, padding = PADDING)
+function ElementsSetPositions(elements, multX = .5, multY = .5, dir = ELEMENT_DIR.VERTICAL, alignType = ALIGN.MIDDLE, maxPerLine = -1, maxTotal = infinity, padding = PADDING)
 {
-	var elementAmount = array_length(elements)
+	var elementAmount = min(maxTotal, array_length(elements))
 	var lineLen = elementAmount
 	if (maxPerLine != -1) lineLen = maxPerLine
 	
