@@ -47,7 +47,8 @@ sortingArray = []				// Sorting Big boy
 
 // Collection -------------------------------------------------------------------------------
 collectionMenu = [	new Button("Return to menu",, function(){ChangeMenuState(MENU.MAIN)}),
-					new Button("Load deck")
+					new Button("Save deck",,SaveCurrentDeckToFile),
+					new Button("Load deck",,LoadDeckFromFile)
 				 ]
 				 
 collectionFilters = [	new Button("Sort by cost",, SortCardsByCost)
@@ -60,7 +61,7 @@ pageTurner = [	new Button("<",, function(){UpdateCollection(RENDERER.TURN_LEFT)}
 #macro cardsPerPage 8
 page = 0
 				 
-cardRenders = []
+collectionRenders = []
 deckRenders = []
 
 // Load CSVs from files

@@ -15,6 +15,7 @@
     {"$GMFolder":"","%Name":"Sprites","folderPath":"folders/Sprites.yy","name":"Sprites","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
   "IncludedFiles":[
+    {"$GMIncludedFile":"","%Name":"MyDeck.txt","CopyToMask":-1,"filePath":"datafiles/decks","name":"MyDeck.txt","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"arial.ttf","CopyToMask":-1,"filePath":"datafiles/external-fonts","name":"arial.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"arialbd.ttf","CopyToMask":-1,"filePath":"datafiles/external-fonts","name":"arialbd.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"arialbi.ttf","CopyToMask":-1,"filePath":"datafiles/external-fonts","name":"arialbi.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
