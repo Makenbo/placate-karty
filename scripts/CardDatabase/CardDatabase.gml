@@ -41,6 +41,7 @@ enum CARD_DRAW_TYPE
 
 enum CARD_INTERACTION
 {
+	STATIC,
 	ADD_TO_DECK,
 	REMOVE_FROM_DECK
 }
@@ -367,12 +368,35 @@ function DrawCardSurfaces()
 	}
 }
 
+function DrawDeckSurfaces() // Shouldn't exist but it does and it's just dumb and repeating code
+{
+	var drawOnTop = []
+	for (var i = 0; i < array_length(oInterface.selectedDeckArr); i++)
+	{
+		var cardRenderer = oInterface.selectedDeckArr[i]
+		
+		if (cardRenderer.onTop) array_push(drawOnTop, cardRenderer)
+		else draw_surface(cardRenderer.surface, cardRenderer.clampedX-cardRenderer.width/2, cardRenderer.clampedY-cardRenderer.height/2)
+	}
+	
+	for (var i = 0; i < array_length(drawOnTop); i++)
+	{
+		var cardRenderer = drawOnTop[i]
+		
+		var xOff = 0
+		if (cardRenderer.interaction == CARD_INTERACTION.REMOVE_FROM_DECK and cardRenderer.holdState == CARD_STATE.HOVERED) xOff = COMPACT_X_OFF * cardRenderer.scale
+		
+		draw_surface(cardRenderer.surface, cardRenderer.clampedX-xOff-cardRenderer.width/2, cardRenderer.clampedY-cardRenderer.height/2)
+	}
+}
+
 function CSVsToArray()
 {
 	ds_map_clear(oInterface.cardDatabase)
 	array_resize(oInterface.sortingArray, 0)
 	FreeCollectionRenderer()
 	
+	var count = 0
 	for (var i = 0; file_exists($"sheet{i}.csv"); i++)
 	{
 		var csvGrid = load_csv($"sheet{i}.csv")
@@ -393,10 +417,11 @@ function CSVsToArray()
 			var card = new Card(name, cost, image, expansion, type, expNumber, description, author, strength, rarity)
 			ds_map_add(oInterface.cardDatabase, id_, card)
 			array_push(oInterface.sortingArray, card)
+			count++
 		}
 	}
 	
-	totalCardAmount = array_length(oInterface.sortingArray)
+	totalCardAmount = count
 	oInterface.sheetStateText = $"{totalCardAmount} cards loaded"
 }
 
@@ -413,12 +438,19 @@ function DrawCollectionDeck()
 	RedrawCards(oInterface.deckRenders)
 }
 
+function DrawPreviewDeck()
+{
+	ElementsSetPositions(oInterface.selectedDeckArr, .9, .07, ELEMENT_DIR.VERTICAL, ALIGN.LEFT,,, 0)
+	RedrawCards(oInterface.selectedDeckArr)
+}
+
 function SortCardsByCost()
 {
 	var sortFunc = function(a, b)
 	{
-		if (a.cost != b.cost) return a.cost - b.cost
-		return a.name > b.name
+		if (a.cost != b.cost)
+			return a.cost - b.cost
+		else return a.name > b.name
 	}
 	
 	array_sort(oInterface.sortingArray, sortFunc)
@@ -452,7 +484,13 @@ function SaveCurrentDeckToFile()
 	file_text_close(file)
 }
 
-function LoadDeckFromFile()
+enum DECK
+{
+	COLLECTION,
+	MATCH
+}
+
+function LoadDeckFromFile(target = DECK.COLLECTION)
 {
 	var location = get_open_filename_ext("Deck|*.txt", "", $"{working_directory}/decks", "Load deck")
 	if (location == "") return;
@@ -466,14 +504,28 @@ function LoadDeckFromFile()
 			var amount = file_text_read_real(file)
 			file_text_readln(file)
 			
-			var insert = new CardRenderer(cardID, CARD_INTERACTION.REMOVE_FROM_DECK, CARD_DRAW_TYPE.COMPACT)
+			var interaction = CARD_INTERACTION.REMOVE_FROM_DECK
+			if (target == DECK.MATCH) interaction = CARD_INTERACTION.STATIC
+			var insert = new CardRenderer(cardID, interaction, CARD_DRAW_TYPE.COMPACT)
 			insert.includedTimes = amount
-			array_push(oInterface.deckRenders, insert)
+			
+			switch (target)
+			{
+				case DECK.COLLECTION:
+					array_push(oInterface.deckRenders, insert)
+					SortDeck()
+					DrawCollectionDeck()
+					break
+					
+				case DECK.MATCH:
+					array_push(oInterface.selectedDeckArr, insert)
+					SortDeck()
+					DrawPreviewDeck()
+					break
+			}
 		}
 	
 	file_text_close(file)
-	SortDeck()
-	DrawCollectionDeck()
 }
 
 

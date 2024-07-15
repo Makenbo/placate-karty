@@ -19,6 +19,16 @@ if (!surface_exists(guiSurf))
 			RedrawElements(collectionFilters)
 			DrawCardCollection()
 			break
+			
+		case MENU.MULTIPLAYER_SETUP:
+			ElementsSetPositions(multiplayerMenu, .2,,,ALIGN.LEFT)
+			RedrawElements(multiplayerMenu)
+			DrawPreviewDeck()
+			break
+
+		case MENU.MATCH:
+			RedrawElements(interactableAreas)
+			break
 	}
 }
 
@@ -50,7 +60,29 @@ switch (uiState)
 		UpdateElements(collectionRenders)
 		UpdateElements(deckRenders)
 		draw_set_halign(fa_center)
-		draw_text(GUI_W * .05, GUI_H * .75, $"Page {page}")
+		draw_text(GUI_W * .05, GUI_H * .75, $"Page {page+1}")
+		break
+		
+	case MENU.MULTIPLAYER_SETUP:
+		if (PASTE) ConnectToNetworkFromClipboard()
+		DrawDeckSurfaces()
+		UpdateElements(multiplayerMenu)
+		UpdateElements(selectedDeckArr)
+		draw_set_halign(fa_left)
+		draw_text(multiplayerMenu[2].xPos+multiplayerMenu[2].width+PADDING, multiplayerMenu[2].yPos+multiplayerMenu[2].height/2, clientStatus)
+		draw_text(multiplayerMenu[3].xPos+multiplayerMenu[3].width+PADDING, multiplayerMenu[3].yPos+multiplayerMenu[3].height/2, hostStatus)
+		if (hostedServer != -1)
+		{
+			draw_text(GUI_W * .6, GUI_H * .7, "Connected players:")
+			for (var i = 0; i < ds_list_size(socketList); i++)
+			{
+				draw_text(GUI_W * .6, GUI_H * .7 + PADDING * (i+1), socketList[| i])
+			}
+		}
+		break
+		
+	case MENU.MATCH:
+		UpdateElements(interactableAreas)
 		break
 }
 

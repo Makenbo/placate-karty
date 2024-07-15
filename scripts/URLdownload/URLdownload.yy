@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"URLdownload",
   "parent":{
-    "name":"draci-karty",
-    "path":"draci-karty.yyp",
+    "name":"Cards",
+    "path":"folders/Cards.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

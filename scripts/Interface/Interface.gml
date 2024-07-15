@@ -12,6 +12,7 @@ function RedrawElements(elements, clear = true)
 			elements[i].Draw()
 		}
 		gpu_set_blendmode_ext(bm_src_alpha, bm_inv_src_alpha)
+		draw_set_alpha(1)
 	
 	surface_reset_target()
 }

@@ -31,7 +31,7 @@ enum ELEMENT_DIR
 	HORIZONTAL
 }
 
-function ElementsSetPositions(elements, multX = .5, multY = .5, dir = ELEMENT_DIR.VERTICAL, alignType = ALIGN.MIDDLE, maxPerLine = -1, maxTotal = infinity, padding = PADDING)
+function ElementsSetPositions(elements, multX = .5, multY = .2, dir = ELEMENT_DIR.VERTICAL, alignType = ALIGN.MIDDLE, maxPerLine = -1, maxTotal = infinity, padding = PADDING)
 {
 	var elementAmount = min(maxTotal, array_length(elements))
 	var lineLen = elementAmount
@@ -80,7 +80,9 @@ function ElementsSetPositions(elements, multX = .5, multY = .5, dir = ELEMENT_DI
 	}
 }
 
-function Button(name_ = "temp", description_ = "", func_ = function(){}, width_ = -1) : GuiElement() constructor
+#macro UNCLICKABLE_ALPHA .5
+
+function Button(name_ = "temp", func_ = function(){}, description_ = "", clickable_ = true, width_ = -1) : GuiElement() constructor
 {
 	variable = false
 	name = name_
@@ -89,6 +91,8 @@ function Button(name_ = "temp", description_ = "", func_ = function(){}, width_ 
 	if (width_ == -1) width = string_width(name) + PADDING
 	else width = width_
 	func = func_
+	clickable = clickable_
+	alpha = clickable ? 1 : UNCLICKABLE_ALPHA
 	
 	static Draw = function()
 	{
@@ -96,10 +100,13 @@ function Button(name_ = "temp", description_ = "", func_ = function(){}, width_ 
 		
 		if (yPosShifted > -height and yPosShifted < GUI_H)
 		{
-			//Draw general button
+			//// Draw general button
 			//draw_set_color(c_black)
 			//draw_rectangle(round(xPos),round(yPosShifted),round(xPos+width),round(yPosShifted+height),false)
 		
+			alpha = clickable ? 1 : UNCLICKABLE_ALPHA
+			draw_set_alpha(alpha)
+			
 			draw_set_color(c_yellow)
 			draw_rectangle(round(xPos),round(yPosShifted),round(xPos+width),round(yPosShifted+height),true)
 			
@@ -112,41 +119,95 @@ function Button(name_ = "temp", description_ = "", func_ = function(){}, width_ 
 	
 	static Update = function(index,surf)
 	{
-		var yPosShifted = yPos //+ oController.guiScrollOffset
+		//var yPosShifted = yPos //+ oController.guiScrollOffset
 		
-		if (yPosShifted > -height and yPosShifted < GUI_H)
+		if (point_in_rectangle(mX,mY,xPos,yPos,xPos+width,yPos+height) and clickable)
 		{
-			if (point_in_rectangle(mX,mY,xPos,yPosShifted,xPos+width,yPosShifted+height))
+			//Change curor type
+			if (oInterface.cursorImage != cr_handpoint)
+				oInterface.cursorImage = cr_handpoint
+			
+			//Hover indicator
+			draw_set_alpha(.2)
+			draw_rectangle(xPos,yPos,xPos+width,yPos+height,false)
+			draw_set_alpha(1)
+			
+			//Draw button description
+			draw_set_halign(fa_right)
+			draw_set_valign(fa_bottom)
+			draw_text(GUI_W - PADDING, GUI_H - PADDING, description)
+			draw_set_valign(fa_middle)
+				
+			if (INTERACT_PRESS)
 			{
-				//Change curor type
-				if (oInterface.cursorImage != cr_handpoint)
-					oInterface.cursorImage = cr_handpoint
-			
-				//Hover indicator
-				draw_set_alpha(.2)
-				draw_rectangle(xPos,yPosShifted,xPos+width,yPosShifted+height,false)
-				draw_set_alpha(1)
-			
-				//Draw button description
-				draw_set_halign(fa_right)
-				draw_set_valign(fa_bottom)
-				draw_text(GUI_W - PADDING, GUI_H - PADDING, description)
-				draw_set_valign(fa_middle)
+				func()
 				
-				if (INTERACT_PRESS)
-				{
-					func()
-				
-					//Redraw the updated button on the surface
-					//surface_set_target(surf)
-					//self.Draw()
-					//surface_reset_target()
-				}
+				//Redraw the updated button on the surface
+				//surface_set_target(surf)
+				//self.Draw()
+				//surface_reset_target()
 			}
 		}
 	}
 }
 
+enum INTERACTION_AREA
+{
+	DECK
+}
+
+function InteractableArea(xMult, yMult, height_, width_, interaction_, text_ = "Template", textScale_ = 1, interactable_ = true, isVisible_ = true) : GuiElement() constructor
+{
+	xPos = GUI_W * xMult
+	yPos = GUI_H * yMult
+	height = height_
+	width = width_
+	text = text_
+	textScale = textScale_
+	interactable = interactable_
+	interaction = interaction_
+	isVisible = isVisible_
+	
+	function Draw()
+	{
+		if (isVisible)
+		{
+			var drawX = xPos - width/2
+			var drawY = yPos - height/2
+		
+			draw_set_alpha(.15)
+			draw_set_color(c_white)
+			draw_rectangle(round(xPos-width/2),round(yPos-height/2),round(xPos+width/2),round(yPos+height/2),false)
+
+			draw_set_alpha(1)
+			draw_text(xPos,yPos,text)
+		}
+	}
+	
+	function Update()
+	{
+		var drawX = xPos - width/2
+		var drawY = yPos - height/2
+		if (point_in_rectangle(mX,mY,drawX,drawY,drawX+width,drawY+height) and interactable)
+		{
+			if (isVisible)
+			{
+				//Hover indicator
+				draw_set_alpha(.2)
+				draw_rectangle(drawX,drawY,drawX+width,drawY+height,false)
+				draw_set_alpha(1)
+			}
+			
+			// Big interaction switches
+			if (INTERACT_PRESS)
+			{
+				
+			}
+		}
+	}
+}
+
+/*
 function Slider(minNum_,maxNum_,length_,name_ = "temp",description_ = "Description not available",isInt_ = false) : GuiElement() constructor
 {
 	variable = 0

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"InterfaceUnused",
   "parent":{
-    "name":"draci-karty",
-    "path":"draci-karty.yyp",
+    "name":"Interface",
+    "path":"folders/Interface.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

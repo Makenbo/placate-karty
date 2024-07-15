@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"CardDatabase",
+  "%Name":"NetworkingMessages",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"CardDatabase",
+  "name":"NetworkingMessages",
   "parent":{
-    "name":"Cards",
-    "path":"folders/Cards.yy",
+    "name":"Networking",
+    "path":"folders/Networking.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
