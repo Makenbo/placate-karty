@@ -117,18 +117,19 @@ function LoadDeckFromFile(target = DECK.COLLECTION)
 			{
 				case DECK.COLLECTION:
 					array_push(oInterface.deckRenders, insert)
-					SortDeck()
-					DrawCollectionDeck()
 					break
 					
 				case DECK.MATCH:
 					array_push(oInterface.myDeck, insert)
-					SortDeck()
-					DrawPreviewDeck()
 					break
 			}
 		}
 	
 	file_text_close(file)
+	
+	SortDeck()
+	
+	if (target == DECK.COLLECTION) DrawCollectionDeck()
+	else DrawPreviewDeck()
 }
 

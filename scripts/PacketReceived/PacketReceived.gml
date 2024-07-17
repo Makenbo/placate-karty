@@ -24,7 +24,7 @@ function ClientReceivedPacket(buffer)
 			
 		case CLIENT_MSG.DRAW_CARD:
 			var cardIndex = array_length(opponentHand)
-			array_push(opponentHand, new CardRenderer("", CARD_INTERACTION.IN_HAND, CARD_DRAW_TYPE.BACKFACE, CARD_HAND_SCALE, cardIndex))
+			array_push(opponentHand, new CardRenderer(-1, CARD_INTERACTION.IN_HAND, CARD_DRAW_TYPE.BACKFACE, CARD_HAND_SCALE, cardIndex))
 			DrawOpponentHand()
 			break
 	}

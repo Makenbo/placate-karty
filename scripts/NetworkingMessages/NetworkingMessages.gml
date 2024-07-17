@@ -16,6 +16,17 @@ function MatchSetup()
 {
 	with (oInterface)
 	{
+		for (var i = 0; i < array_length(myDeck); i++)
+		{
+			var cardAmount = myDeck[i].includedTimes
+			if (cardAmount > 1)
+			{
+				repeat (cardAmount-1)
+				{
+					array_push(myDeck, new CardRenderer(myDeck[i].idd, CARD_INTERACTION.STATIC))
+				}
+			}
+		}
 		myDeck = array_shuffle(myDeck)
 	}
 }

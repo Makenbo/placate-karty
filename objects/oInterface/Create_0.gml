@@ -1,5 +1,5 @@
 //Better scaling
-//application_surface_draw_enable(false)
+application_surface_draw_enable(false)
 
 randomize()
 
@@ -52,6 +52,7 @@ totalCardAmount = 0
 // Card Database
 cardDatabase = ds_map_create()	// Big boy
 sortingArray = []				// Sorting Big boy
+loadedSprites = ds_map_create()
 
 // Collection -------------------------------------------------------------------------------
 collectionMenu = [	new Button("Return to menu", function(){ChangeMenuState(MENU.MAIN)}),
@@ -126,11 +127,6 @@ p2x = 300
 
 // Load CSVs from files
 CSVsToArray()
-
-
-
-
-
 
 
 

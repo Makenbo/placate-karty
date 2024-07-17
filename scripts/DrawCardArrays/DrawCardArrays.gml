@@ -7,13 +7,13 @@ function DrawCardCollection()
 
 function DrawCollectionDeck()
 {
-	ElementsSetPositions(oInterface.deckRenders, .9, .07, ELEMENT_DIR.VERTICAL, ALIGN.LEFT,,, 0)
+	ElementsSetPositions(oInterface.deckRenders, .9, .07, ELEMENT_DIR.VERTICAL, ALIGN.LEFT,,, -1)
 	RedrawCards(oInterface.deckRenders)
 }
 
 function DrawPreviewDeck()
 {
-	ElementsSetPositions(oInterface.myDeck, .9, .07, ELEMENT_DIR.VERTICAL, ALIGN.LEFT,,, 0)
+	ElementsSetPositions(oInterface.myDeck, .9, .07, ELEMENT_DIR.VERTICAL, ALIGN.LEFT,,, -1)
 	RedrawCards(oInterface.myDeck)
 }
 

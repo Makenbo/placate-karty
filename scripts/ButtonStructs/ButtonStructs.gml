@@ -50,6 +50,8 @@ function ElementsSetPositions(elements, multX = .5, multY = .2, dir = ELEMENT_DI
 		
 			xx *= multX
 			yy *= multY
+			
+			elements[arrPos].RecalculateSize()
 		
 			switch (alignType)
 			{
@@ -75,8 +77,8 @@ function ElementsSetPositions(elements, multX = .5, multY = .2, dir = ELEMENT_DI
 					break
 			}
 		
-			elements[arrPos].xPos = xx
-			elements[arrPos].yPos = yy
+			elements[arrPos].xPos = floor(xx)
+			elements[arrPos].yPos = floor(yy)
 		}
 	}
 }
@@ -150,6 +152,10 @@ function Button(name_ = "temp", func_ = function(){}, description_ = "", clickab
 			}
 		}
 	}
+	
+	function RecalculateSize()
+	{
+	}
 }
 
 enum INTERACTION_AREA
@@ -215,7 +221,7 @@ function InteractableArea(xMult_, yMult_, height_, width_, interaction_, text_ =
 			if (INTERACT_PRESS)
 			{
 				// Draw a card
-				if (interaction == INTERACTION_AREA.DECK and global.holdingCard == false)
+				if (interaction == INTERACTION_AREA.DECK and global.holdingCard == false and array_length(oInterface.myDeck) > 0)
 				{
 					var card = array_pop(oInterface.myDeck).card
 					var cardID = array_length(oInterface.myDeck)
@@ -226,6 +232,10 @@ function InteractableArea(xMult_, yMult_, height_, width_, interaction_, text_ =
 				}
 			}
 		}
+	}
+	
+	function RecalculateSize()
+	{
 	}
 }
 

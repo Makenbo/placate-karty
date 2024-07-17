@@ -28,6 +28,7 @@ enum RENDERER
 
 function UpdateCollection(action)
 {
+	var pageCount = floor(oInterface.totalCardAmount / cardsPerPage)
 	switch (action)
 	{
 		case RENDERER.ENTER_COLLECTION:
@@ -35,13 +36,13 @@ function UpdateCollection(action)
 			break
 			
 		case RENDERER.TURN_LEFT:
-			if (oInterface.page <= 0) return;
 			oInterface.page--
+			if (oInterface.page < 0) oInterface.page = pageCount
 			break
 			
 		case RENDERER.TURN_RIGHT:
-			if (oInterface.page >= floor(oInterface.totalCardAmount / cardsPerPage)) return;
 			oInterface.page++
+			if (oInterface.page > pageCount) oInterface.page = 0
 			break
 	}
 	
