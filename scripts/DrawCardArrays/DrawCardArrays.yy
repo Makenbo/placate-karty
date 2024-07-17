@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"DrawCardArrays",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"DrawCardArrays",
+  "parent":{
+    "name":"Cards",
+    "path":"folders/Cards.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

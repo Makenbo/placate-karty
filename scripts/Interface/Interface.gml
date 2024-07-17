@@ -1,10 +1,11 @@
-function RedrawElements(elements, clear = true)
+function RedrawElements(elements, transparent = true)
 {
 	surface_set_target(oInterface.guiSurf)
 	
 		//if (clear) draw_clear_alpha(c_dkgray, 1)
 
-		gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha) // Somehow fixes text edges
+		if (transparent) gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha) // Somehow fixes text edges
+		else gpu_set_blendmode_ext(bm_src_alpha, bm_one)
 		draw_set_halign(fa_center)
 		draw_set_valign(fa_middle)
 		for (var i = 0; i < array_length(elements); i++)

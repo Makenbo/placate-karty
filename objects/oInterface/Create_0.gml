@@ -1,6 +1,8 @@
 //Better scaling
 //application_surface_draw_enable(false)
 
+randomize()
+
 // GUI -------------------------------------------------------------------------------
 #macro INTERACT_PRESS mouse_check_button_pressed(mb_left)
 #macro INTERACT_HOLD mouse_check_button(mb_left)
@@ -10,6 +12,8 @@
 
 #macro PADDING 30
 #macro TEXT_OFF 10
+
+global.holdingCard = false
 
 enum MENU
 {
@@ -67,23 +71,25 @@ page = 0
 				 
 collectionRenders = []
 deckRenders = []
+cardsOnTop = []
 
 // Multiplayer setup menu -------------------------------------------------------------------------------
-multiplayerMenu = [	new Button("Start 2 player match", StartMatch,,false),
+multiplayerMenu = [	new Button("Start 2 player match", StartMatch,,),
 					//new Button("Start 4 player match",,,false),
 					new Button("Select deck", function(){LoadDeckFromFile(DECK.MATCH)}),
 					new Button("Join server from file", ConnectToNetworkFromFile),
 					new Button("Host server", CreateNetwork),
 					new Button("Return to menu", function(){ChangeMenuState(MENU.MAIN)})
 				  ]
-selectedDeckArr = []
+
+myDeck = []
 				  
 // The Match -------------------------------------------------------------------------------
 interactableAreas = [
-						new InteractableArea(.8, .3, 150, 80, INTERACTION_AREA.DECK, "Deck", .8, false),
-						new InteractableArea(.8, .7, 150, 80, INTERACTION_AREA.DECK, "Deck", .8, true)
+						new InteractableArea(.9, .3, 150, 80, INTERACTION_AREA.DECK, "Deck", .8, false),
+						new InteractableArea(.9, .7, 150, 80, INTERACTION_AREA.DECK, "Deck", .8, true)
 					]
-myDeck = []
+					
 friendlyHand = []
 opponentHand = []
 cardsOnBoard = []
@@ -91,10 +97,16 @@ cardsOnBoard = []
 // Networking
 #macro NETWORK_PORT 6510
 #macro MAX_PLAYERS 2
+#macro CARD_HAND_SCALE .6
+#macro CARD_ON_BOARD_SCALE .5
 
 enum CLIENT_MSG
 {
-	MATCH_START
+	MATCH_START,
+	DRAW_CARD,
+	MOVE_CARD,
+	CARD_CHANGE_STATE,
+	DESTROY_CARD
 }
 
 hostedServer = -1
@@ -104,6 +116,7 @@ socketList = ds_list_create()
 hostStatus = ""
 connectedToNetwork = false
 clientStatus = "Not connected"
+//currentCardID = 0
 
 clientBuffer = buffer_create(2, buffer_grow, 1)
 serverBuffer = buffer_create(2, buffer_grow, 1)

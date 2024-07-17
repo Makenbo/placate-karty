@@ -8,6 +8,7 @@ enum BUTTON		//Button types
 #macro mY device_mouse_y_to_gui(0)
 #macro GUI_W display_get_gui_width()
 #macro GUI_H display_get_gui_height()
+#macro WINDOW_SCALAR GUI_W/1366 // Dividing by the default width
 
 function GuiElement()
 {
@@ -156,8 +157,10 @@ enum INTERACTION_AREA
 	DECK
 }
 
-function InteractableArea(xMult, yMult, height_, width_, interaction_, text_ = "Template", textScale_ = 1, interactable_ = true, isVisible_ = true) : GuiElement() constructor
+function InteractableArea(xMult_, yMult_, height_, width_, interaction_, text_ = "Template", textScale_ = 1, interactable_ = true, isVisible_ = true) : GuiElement() constructor
 {
+	xMult = xMult_
+	yMult = yMult_
 	xPos = GUI_W * xMult
 	yPos = GUI_H * yMult
 	height = height_
@@ -172,6 +175,11 @@ function InteractableArea(xMult, yMult, height_, width_, interaction_, text_ = "
 	{
 		if (isVisible)
 		{
+			// Update position
+			xPos = GUI_W * xMult
+			yPos = GUI_H * yMult
+			
+			// Draw thyself!
 			var drawX = xPos - width/2
 			var drawY = yPos - height/2
 		
@@ -190,6 +198,11 @@ function InteractableArea(xMult, yMult, height_, width_, interaction_, text_ = "
 		var drawY = yPos - height/2
 		if (point_in_rectangle(mX,mY,drawX,drawY,drawX+width,drawY+height) and interactable)
 		{
+			//Change curor type
+			if (interaction == INTERACTION_AREA.DECK and global.holdingCard == false)
+				if (oInterface.cursorImage != cr_handpoint)
+					oInterface.cursorImage = cr_handpoint
+			
 			if (isVisible)
 			{
 				//Hover indicator
@@ -201,7 +214,16 @@ function InteractableArea(xMult, yMult, height_, width_, interaction_, text_ = "
 			// Big interaction switches
 			if (INTERACT_PRESS)
 			{
-				
+				// Draw a card
+				if (interaction == INTERACTION_AREA.DECK and global.holdingCard == false)
+				{
+					var card = array_pop(oInterface.myDeck).card
+					var cardID = array_length(oInterface.myDeck)
+					array_push(	oInterface.friendlyHand,
+								new CardRenderer(card.id_, CARD_INTERACTION.IN_HAND, CARD_DRAW_TYPE.FULL, CARD_HAND_SCALE, cardID))
+					DrawHand()
+					ClientDrewCard()
+				}
 			}
 		}
 	}

@@ -28,6 +28,8 @@ if (!surface_exists(guiSurf))
 
 		case MENU.MATCH:
 			RedrawElements(interactableAreas)
+			DrawHand()
+			DrawOpponentHand()
 			break
 	}
 }
@@ -53,7 +55,9 @@ switch (uiState)
 		break
 		
 	case MENU.COLLECTION:
-		DrawCardSurfaces()
+		DrawCardSurfaces(collectionRenders)
+		DrawCardSurfaces(deckRenders)
+		DrawOnTopCardSurfaces()
 		UpdateElements(collectionMenu)
 		UpdateElements(collectionFilters)
 		UpdateElements(pageTurner)
@@ -65,9 +69,10 @@ switch (uiState)
 		
 	case MENU.MULTIPLAYER_SETUP:
 		if (PASTE) ConnectToNetworkFromClipboard()
-		DrawDeckSurfaces()
+		DrawCardSurfaces(myDeck)
+		DrawOnTopCardSurfaces()
 		UpdateElements(multiplayerMenu)
-		UpdateElements(selectedDeckArr)
+		UpdateElements(myDeck)
 		draw_set_halign(fa_left)
 		draw_text(multiplayerMenu[2].xPos+multiplayerMenu[2].width+PADDING, multiplayerMenu[2].yPos+multiplayerMenu[2].height/2, clientStatus)
 		draw_text(multiplayerMenu[3].xPos+multiplayerMenu[3].width+PADDING, multiplayerMenu[3].yPos+multiplayerMenu[3].height/2, hostStatus)
@@ -82,7 +87,12 @@ switch (uiState)
 		break
 		
 	case MENU.MATCH:
+		DrawCardSurfaces(friendlyHand)
+		DrawCardSurfaces(opponentHand)
+		DrawOnTopCardSurfaces()
 		UpdateElements(interactableAreas)
+		UpdateElements(friendlyHand)
+		UpdateElements(opponentHand)
 		break
 }
 

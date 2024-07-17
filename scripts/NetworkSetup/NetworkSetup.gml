@@ -28,7 +28,7 @@ function ConnectToNetworkFromClipboard()
 
 function ConnectToNetworkFromFile()
 {
-	var filename = get_open_filename("text|*.txt", "")
+	var filename = get_open_filename_ext("text|*.txt", "", $"{working_directory}servers", "Choose your deck")
 	if (filename == "") return;
 	var file = file_text_open_read(filename)
 	var address = file_text_read_string(file)

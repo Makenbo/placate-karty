@@ -33,6 +33,8 @@
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
     {"id":{"name":"ButtonStructs","path":"scripts/ButtonStructs/ButtonStructs.yy",},},
     {"id":{"name":"CardDatabase","path":"scripts/CardDatabase/CardDatabase.yy",},},
+    {"id":{"name":"CardRendering","path":"scripts/CardRendering/CardRendering.yy",},},
+    {"id":{"name":"DrawCardArrays","path":"scripts/DrawCardArrays/DrawCardArrays.yy",},},
     {"id":{"name":"Interface","path":"scripts/Interface/Interface.yy",},},
     {"id":{"name":"InterfaceUnused","path":"scripts/InterfaceUnused/InterfaceUnused.yy",},},
     {"id":{"name":"MenuTransitions","path":"scripts/MenuTransitions/MenuTransitions.yy",},},
