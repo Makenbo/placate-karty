@@ -27,6 +27,8 @@ if (!surface_exists(guiSurf))
 			break
 
 		case MENU.MATCH:
+			ElementsSetPositions(matchUI, .9,.5,,ALIGN.MIDDLE,,,250 * WINDOW_SCALAR)
+			RedrawElements(matchUI)
 			RedrawElements(interactableAreas)
 			DrawHand()
 			DrawOpponentHand()
@@ -87,12 +89,13 @@ switch (uiState)
 		break
 		
 	case MENU.MATCH:
-		DrawCardSurfaces(friendlyHand)
-		DrawCardSurfaces(opponentHand)
-		DrawOnTopCardSurfaces()
 		UpdateElements(interactableAreas)
 		UpdateElements(friendlyHand)
 		UpdateElements(opponentHand)
+		UpdateElements(matchUI)
+		DrawCardSurfaces(friendlyHand)
+		DrawCardSurfaces(opponentHand)
+		DrawOnTopCardSurfaces()
 		break
 }
 

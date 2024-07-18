@@ -8,6 +8,8 @@
 #macro DESCRIPTION_SCALE .4
 #macro COMPACT_NAME_SCALE .7
 #macro HOVERED_SCALE 1.6
+#macro HOVERED_MATCH_SCALE 1.3
+#macro HELD_SCALE 1.1
 #macro LINE_OFF 10
 
 enum CARD_STATE
@@ -30,6 +32,7 @@ enum CARD_INTERACTION
 	COLLECTION,
 	IN_DECK,
 	IN_HAND,
+	HOLDING,
 	ON_BOARD
 }
 
@@ -47,6 +50,7 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 		if (!is_undefined(possibleSprite)) sprite = possibleSprite
 		else if (file_exists(card.image))
 			sprite = sprite_add_ext(card.image, 1, 0, 0, true)
+			//sprite = sprite_add(card.image, 1, 0, 0, 0, 0)
 	}
 	
 	spriteX = 0
@@ -222,6 +226,10 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 					break
 			}
 			
+			//draw_text_ext_transformed(	width*.5, height*.5, networkID,
+			//							fontSize + LINE_OFF, CARD_W * 2 - PADDING*6,
+			//							scale * 2, scale * 2, 0)
+			
 		surface_reset_target()
 		scale /= WINDOW_SCALAR
 		
@@ -231,6 +239,12 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 	
 	function Update()
 	{
+		if (interaction == CARD_INTERACTION.HOLDING)
+		{
+			xPos = mX
+			yPos = mY
+		}
+		
 		UpdatePosition(posClamped)
 		
 		var realHeight = compactDraw ? COMPACT_HEIGHT : CARD_H
@@ -246,10 +260,11 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 			if (oInterface.cursorImage != cr_handpoint)
 				oInterface.cursorImage = cr_handpoint
 			
-			if (!opponentsCard or !isHidden) holdState = CARD_STATE.HOVERED
+			if ((!opponentsCard or !isHidden) and holdState == CARD_STATE.STATIC) holdState = CARD_STATE.HOVERED
 			
 			if (INTERACT_PRESS)
 			{
+				var index = 0
 				switch (interaction)
 				{
 					case CARD_INTERACTION.COLLECTION:
@@ -257,7 +272,7 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 						{
 							return element.idd == idd
 						}
-						var index = array_find_index(oInterface.deckRenders, findDuplicate)
+						index = array_find_index(oInterface.deckRenders, findDuplicate)
 						if (index != -1) oInterface.deckRenders[index].includedTimes++
 						else
 						{
@@ -274,7 +289,7 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 						{
 							return element.idd == idd
 						}
-						var index = array_find_index(oInterface.deckRenders, f)
+						index = array_find_index(oInterface.deckRenders, f)
 						if (oInterface.deckRenders[index].includedTimes > 1)
 						{
 							oInterface.deckRenders[index].includedTimes--
@@ -287,12 +302,32 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 							DrawCollectionDeck()
 						}
 						break
+						
+					case CARD_INTERACTION.IN_HAND:
+						interaction = CARD_INTERACTION.HOLDING
+						holdState = CARD_STATE.HELD
+						break
+						
+					case CARD_INTERACTION.ON_BOARD:
+						interaction = CARD_INTERACTION.HOLDING
+						holdState = CARD_STATE.HELD
+						break
+						
+					case CARD_INTERACTION.HOLDING:
+						interaction = CARD_INTERACTION.IN_HAND
+						break
+						
 				}
 			}
 		}
 		else
 		{
 			holdState = CARD_STATE.STATIC
+		}
+		
+		if (holdState == CARD_STATE.HELD)
+		{
+			ClientHoldsCardFromHand(xPos, yPos, networkID)
 		}
 		
 		if (holdState != prevHoldState)
@@ -302,8 +337,15 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 			{
 				case CARD_STATE.HOVERED:
 					onTop = true
-					ChangeScale(HOVERED_SCALE)
+					if (oInterface.uiState == MENU.COLLECTION) ChangeScale(HOVERED_SCALE)
+					else ChangeScale(HOVERED_MATCH_SCALE)
 					posClamped = true
+					UpdatePosition(posClamped)
+					break
+					
+				case CARD_STATE.HELD:
+					ChangeScale(defaultScale * HELD_SCALE)
+					posClamped = false
 					UpdatePosition(posClamped)
 					break
 					
@@ -325,8 +367,8 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 			
 			var xLeft = clampedX-xOff-width/2
 			var yTop = clampedY-height/2
-			
-			if (interaction == CARD_INTERACTION.IN_DECK)
+		
+			if (drawType == CARD_DRAW_TYPE.COMPACT)
 			{
 				draw_set_color(c_black)
 				draw_set_alpha(.4)
@@ -336,10 +378,11 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 				draw_set_color(c_white)
 				draw_set_alpha(.1)
 			}
+			draw_set_halign(fa_center)
 			draw_rectangle(clampedX-xOff-width/2,clampedY-height/2,clampedX-xOff+width/2,clampedY+height/2,false)
 			draw_set_alpha(1)
 			
-			if (interaction == CARD_INTERACTION.IN_DECK)
+			if (drawType == CARD_DRAW_TYPE.COMPACT)
 			{
 				draw_set_color(c_yellow)
 				draw_set_alpha(1)

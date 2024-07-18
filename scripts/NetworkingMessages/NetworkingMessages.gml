@@ -50,6 +50,20 @@ function ClientDrewCard()
 	}
 }
 
+function ClientHoldsCardFromHand(xx, yy, networkID)
+{
+	with (oInterface)
+	{
+		buffer_seek(clientBuffer, buffer_seek_start, 0)
+		buffer_write(clientBuffer, buffer_u8, CLIENT_MSG.MOVE_CARD)
+		buffer_write(clientBuffer, buffer_u8, CARD_INTERACTION.IN_HAND)
+		buffer_write(clientBuffer, buffer_u8, networkID)
+		buffer_write(clientBuffer, buffer_u16, round(xx / GUI_W * TWO_BYTES))
+		buffer_write(clientBuffer, buffer_u16, round(yy / GUI_H * TWO_BYTES))
+		network_send_packet(mySocket, clientBuffer, buffer_tell(clientBuffer))
+	}
+}
+
 
 
 

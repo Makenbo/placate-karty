@@ -13,6 +13,8 @@ randomize()
 #macro PADDING 30
 #macro TEXT_OFF 10
 
+#macro TWO_BYTES 65535 // Starting from 0
+
 global.holdingCard = false
 
 enum MENU
@@ -88,12 +90,17 @@ myDeck = []
 // The Match -------------------------------------------------------------------------------
 interactableAreas = [
 						new InteractableArea(.9, .3, 150, 80, INTERACTION_AREA.DECK, "Deck", .8, false),
-						new InteractableArea(.9, .7, 150, 80, INTERACTION_AREA.DECK, "Deck", .8, true)
+						new InteractableArea(.9, .7, 150, 80, INTERACTION_AREA.DECK, "Deck", .8, true),
+						new InteractableArea(0, .95, 150, 500, INTERACTION_AREA.HAND, "")
 					]
 					
 friendlyHand = []
 opponentHand = []
 cardsOnBoard = []
+matchUI =	[
+				new Button("Take turn",,,,,c_white),
+				new Button("End match")
+			]
 
 // Networking
 #macro NETWORK_PORT 6510
@@ -107,6 +114,7 @@ enum CLIENT_MSG
 	DRAW_CARD,
 	MOVE_CARD,
 	CARD_CHANGE_STATE,
+	CARD_HOVERED,
 	DESTROY_CARD
 }
 

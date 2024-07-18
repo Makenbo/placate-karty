@@ -16,6 +16,14 @@ function FreeDeckRenderer()
 		delete oInterface.deckRenders[i]
 	}
 	array_resize(oInterface.deckRenders, 0)
+	
+	
+	for (var i = 0; i < array_length(oInterface.myDeck); i++)
+	{
+		oInterface.myDeck[i].Free()
+		delete oInterface.myDeck[i]
+	}
+	array_resize(oInterface.myDeck, 0)
 }
 
 enum RENDERER

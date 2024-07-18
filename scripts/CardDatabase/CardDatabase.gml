@@ -73,7 +73,7 @@ function SortDeck()
 
 function SaveCurrentDeckToFile()
 {
-	var location = get_save_filename_ext("Deck|*.txt", "MyDeck", $"{working_directory}/decks", "Save deck")
+	var location = get_save_filename_ext("Deck|*.txt", "MyDeck", $"{working_directory}decks", "Save deck")
 	var file = file_text_open_write(location)
 	
 		var arrLen = array_length(oInterface.deckRenders)

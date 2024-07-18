@@ -27,6 +27,22 @@ function ClientReceivedPacket(buffer)
 			array_push(opponentHand, new CardRenderer(-1, CARD_INTERACTION.IN_HAND, CARD_DRAW_TYPE.BACKFACE, CARD_HAND_SCALE, cardIndex))
 			DrawOpponentHand()
 			break
+			
+		case CLIENT_MSG.MOVE_CARD:
+			var cardSource = buffer_read(buffer, buffer_u8)
+			var index = buffer_read(buffer, buffer_u8)
+			var xx = buffer_read(buffer, buffer_u16) / TWO_BYTES * GUI_W
+			var yy = (1 - buffer_read(buffer, buffer_u16) / TWO_BYTES) * GUI_H
+			switch (cardSource)
+			{
+				case CARD_INTERACTION.IN_HAND:
+					oInterface.opponentHand[index].xPos = round(xx)
+					oInterface.opponentHand[index].yPos = round(yy)
+					break
+
+				case CARD_INTERACTION.IN_DECK:
+					break
+			}
 	}
 }
 

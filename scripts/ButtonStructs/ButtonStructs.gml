@@ -85,7 +85,7 @@ function ElementsSetPositions(elements, multX = .5, multY = .2, dir = ELEMENT_DI
 
 #macro UNCLICKABLE_ALPHA .5
 
-function Button(name_ = "temp", func_ = function(){}, description_ = "", clickable_ = true, width_ = -1) : GuiElement() constructor
+function Button(name_ = "temp", func_ = function(){}, description_ = "", clickable_ = true, width_ = -1, color_ = c_yellow) : GuiElement() constructor
 {
 	variable = false
 	name = name_
@@ -96,6 +96,7 @@ function Button(name_ = "temp", func_ = function(){}, description_ = "", clickab
 	func = func_
 	clickable = clickable_
 	alpha = clickable ? 1 : UNCLICKABLE_ALPHA
+	color = color_
 	
 	static Draw = function()
 	{
@@ -110,7 +111,7 @@ function Button(name_ = "temp", func_ = function(){}, description_ = "", clickab
 			alpha = clickable ? 1 : UNCLICKABLE_ALPHA
 			draw_set_alpha(alpha)
 			
-			draw_set_color(c_yellow)
+			draw_set_color(color)
 			draw_rectangle(round(xPos),round(yPosShifted),round(xPos+width),round(yPosShifted+height),true)
 			
 			var centerX = xPos + (width * .5)
@@ -160,7 +161,9 @@ function Button(name_ = "temp", func_ = function(){}, description_ = "", clickab
 
 enum INTERACTION_AREA
 {
-	DECK
+	DECK,
+	BOARD,
+	HAND
 }
 
 function InteractableArea(xMult_, yMult_, height_, width_, interaction_, text_ = "Template", textScale_ = 1, interactable_ = true, isVisible_ = true) : GuiElement() constructor
@@ -224,7 +227,7 @@ function InteractableArea(xMult_, yMult_, height_, width_, interaction_, text_ =
 				if (interaction == INTERACTION_AREA.DECK and global.holdingCard == false and array_length(oInterface.myDeck) > 0)
 				{
 					var card = array_pop(oInterface.myDeck).card
-					var cardID = array_length(oInterface.myDeck)
+					var cardID = array_length(oInterface.friendlyHand)
 					array_push(	oInterface.friendlyHand,
 								new CardRenderer(card.id_, CARD_INTERACTION.IN_HAND, CARD_DRAW_TYPE.FULL, CARD_HAND_SCALE, cardID))
 					DrawHand()

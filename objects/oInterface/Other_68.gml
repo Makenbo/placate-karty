@@ -21,14 +21,14 @@ switch (type)
 			multiplayerMenu[0].clickable = true
 			RedrawElements(multiplayerMenu)
 		}
-		show_debug_message("Connected")
+		show_debug_message("Player Connected")
 		break
 
 	case network_type_disconnect:
 		socket = ds_map_find_value(async_load, "socket")
 		ds_list_delete(socketList, ds_list_find_index(socketList, socket))
 		hostStatus = $"{--playersOnNetwork}/{MAX_PLAYERS} joined"
-		show_debug_message("Disconnected")
+		show_debug_message("Player Disconnected")
 		break
 		
 	case network_type_data:
