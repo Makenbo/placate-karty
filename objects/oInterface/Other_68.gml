@@ -6,8 +6,12 @@ switch (type)
 	case network_type_non_blocking_connect:
 		if (ds_map_find_value(async_load, "succeeded"))
 		{
-			clientStatus = "Connected, waiting for host to start the match"
+			clientStatus = "Connected"
 			connectedToNetwork = true
+			
+			// Reveal ready button
+			multiplayerMenu[0].clickable = true
+			RedrawElements(multiplayerMenu)
 		}
 		else clientStatus = "Connection failed"
 		break
@@ -16,11 +20,6 @@ switch (type)
 		socket = ds_map_find_value(async_load, "socket")
 		ds_list_add(socketList, socket)
 		hostStatus = $"{++playersOnNetwork}/{MAX_PLAYERS} joined"
-		if (playersOnNetwork >= MAX_PLAYERS) // Temp
-		{
-			multiplayerMenu[0].clickable = true
-			RedrawElements(multiplayerMenu)
-		}
 		show_debug_message("Player Connected")
 		break
 

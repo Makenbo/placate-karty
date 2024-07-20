@@ -9,7 +9,7 @@
 #macro COMPACT_NAME_SCALE .7
 #macro HOVERED_SCALE 1.6
 #macro HOVERED_MATCH_SCALE 1.3
-#macro HELD_SCALE 1.1
+#macro HELD_SCALE 1
 #macro LINE_OFF 10
 
 enum CARD_STATE
@@ -82,7 +82,12 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 	// Match sppecific
 	isHidden = true
 	opponentsCard = interaction == CARD_INTERACTION.IN_HAND and drawType == CARD_DRAW_TYPE.BACKFACE
-	networkID = networkID_
+	networkID = networkID_ // Network index is also index of the position in the array where this instance is saved
+	multX = 0
+	multY = 0
+	targetX = xPos
+	targetY = yPos
+	followTarget = false
 	
 	function DrawCardFull()
 	{
@@ -222,8 +227,25 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 					break
 					
 				case CARD_DRAW_TYPE.BACKFACE:
-					draw_clear(c_green)
+					if (holdState == CARD_STATE.HOVERED)
+					{
+						draw_clear(c_teal)
+						draw_text_transformed(width*.5, height*.5, "Hidden", 2, 2, 0)
+					}
+					else draw_clear(c_green)
 					break
+			}
+			
+			if (isHidden and drawType != CARD_DRAW_TYPE.BACKFACE and
+			   (interaction == CARD_INTERACTION.ON_BOARD or interaction == CARD_INTERACTION.HOLDING)) // Darken card if it's hidden to the enemy
+			{
+				gpu_set_blendmode_ext(bm_src_alpha, bm_inv_src_alpha)
+				draw_set_color(c_black)
+				draw_set_alpha(.3)
+				draw_rectangle(0, 0, width, height, false)
+				draw_set_color(c_white)
+				draw_set_alpha(1)
+				if (!singleRedraw) gpu_set_blendmode_ext(bm_one, bm_inv_src_alpha)
 			}
 			
 			//draw_text_ext_transformed(	width*.5, height*.5, networkID,
@@ -239,6 +261,16 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 	
 	function Update()
 	{
+		if (point_distance(xPos, yPos, targetX, targetY) < MOVE_EPSILON)
+			followTarget = false
+			
+		if (followTarget)
+		{
+			oInterface.cardMoveLerpSpd = lerp(oInterface.cardMoveLerpSpd, oInterface.cardMoveLerpSpdTarget, CARD_LERP_LERP)
+			xPos = lerp(xPos, targetX, oInterface.cardMoveLerpSpd)
+			yPos = lerp(yPos, targetY, oInterface.cardMoveLerpSpd)
+		}
+		
 		if (interaction == CARD_INTERACTION.HOLDING)
 		{
 			xPos = mX
@@ -257,13 +289,22 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 		if (hovering)
 		{
 			//Change cursor type
-			if (oInterface.cursorImage != cr_handpoint)
+			if (oInterface.cursorImage != cr_handpoint and !opponentsCard)
 				oInterface.cursorImage = cr_handpoint
+				
 			
-			if ((!opponentsCard or !isHidden) and holdState == CARD_STATE.STATIC) holdState = CARD_STATE.HOVERED
-			
-			if (INTERACT_PRESS)
+			if ((!opponentsCard or !isHidden) and !oInterface.hoveringCard and !oInterface.holdingCard and !oInterface.holdingCardPrev)
 			{
+				oInterface.hoveringCard = true
+				holdState = CARD_STATE.HOVERED
+			}
+			
+			if (interaction == CARD_INTERACTION.IN_HAND and drawType != CARD_DRAW_TYPE.BACKFACE) oInterface.handOffTargetY = 0
+			
+			if (INTERACT_PRESS and drawType != CARD_DRAW_TYPE.BACKFACE)
+			{
+				followTarget = false
+				
 				var index = 0
 				switch (interaction)
 				{
@@ -300,34 +341,55 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 							array_delete(oInterface.deckRenders, index, 1)
 							SortDeck()
 							DrawCollectionDeck()
+							oInterface.hoveringCard = false
 						}
 						break
 						
 					case CARD_INTERACTION.IN_HAND:
-						interaction = CARD_INTERACTION.HOLDING
-						holdState = CARD_STATE.HELD
+						if (!oInterface.holdingCard and !oInterface.holdingCardPrev)
+						{
+							interaction = CARD_INTERACTION.HOLDING
+							holdState = CARD_STATE.HELD
+							oInterface.holdingCard = true
+							oInterface.holdingCardIndex = networkID
+							oInterface.holdingCardFromBoard = false
+						}
 						break
 						
 					case CARD_INTERACTION.ON_BOARD:
-						interaction = CARD_INTERACTION.HOLDING
-						holdState = CARD_STATE.HELD
+						if (!oInterface.holdingCard and !oInterface.holdingCardPrev)
+						{
+							interaction = CARD_INTERACTION.HOLDING
+							holdState = CARD_STATE.HELD
+							oInterface.holdingCard = true
+							oInterface.holdingCardIndex = networkID
+							oInterface.holdingCardFromBoard = true
+						}
 						break
 						
 					case CARD_INTERACTION.HOLDING:
-						interaction = CARD_INTERACTION.IN_HAND
+						oInterface.holdingCard = false
 						break
 						
 				}
 			}
+			
+			if (SECONDARY_ACTION_PRESS and drawType != CARD_DRAW_TYPE.BACKFACE and interaction == CARD_INTERACTION.ON_BOARD)
+			{
+				isHidden = false
+				Draw(true)
+				ClientCardChangeVisibility(true, idd, networkID)
+			}
 		}
-		else
+		else // Reset card state if it isn't hovered
 		{
 			holdState = CARD_STATE.STATIC
 		}
 		
 		if (holdState == CARD_STATE.HELD)
 		{
-			ClientHoldsCardFromHand(xPos, yPos, networkID)
+			if (oInterface.holdingCardFromBoard) ClientHoldsCard(xPos, yPos, networkID, CARD_INTERACTION.ON_BOARD)
+			else ClientHoldsCard(xPos, yPos, networkID, CARD_INTERACTION.IN_HAND)
 		}
 		
 		if (holdState != prevHoldState)
@@ -350,6 +412,7 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 					break
 					
 				case CARD_STATE.STATIC:
+					oInterface.hoveringCard = false
 					onTop = false
 					ChangeScale(defaultScale)
 					posClamped = false
@@ -398,6 +461,10 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 	{
 		idd = newId_
 		card = ds_map_find_value(oInterface.cardDatabase, newId_)
+		var possibleSprite = oInterface.loadedSprites[? card.image]
+		if (!is_undefined(possibleSprite)) sprite = possibleSprite
+		else if (file_exists(card.image))
+			sprite = sprite_add_ext(card.image, 1, 0, 0, true)
 	}
 	
 	function ChangeScale(scale_)
@@ -421,6 +488,22 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 			clampedX = xPos
 			clampedY = yPos
 		}
+	}
+	
+	function UpdatePositionScalars()
+	{
+		multX = xPos / GUI_W
+		multY = yPos / GUI_H
+		test = GUI_W
+		tests = GUI_H
+		stests = 5
+	}
+	
+	function UpdatePositionOnScalars()
+	{
+		xPos = multX * GUI_W
+		yPos = multY * GUI_H
+		UpdatePosition(false)
 	}
 	
 	function RecalculateSize()
@@ -449,14 +532,29 @@ function RedrawCards(elements)
 	gpu_set_blendmode_ext(bm_src_alpha, bm_inv_src_alpha)
 }
 
-function DrawCardSurfaces(cards)
+function UpdateCardArrIndexes(arr)
+{
+	for (var i = 0; i < array_length(arr); i++)
+	{
+		arr[i].networkID = i
+	}
+}
+
+function DrawCardSurfaces(cards, xOffMult = 0, yOffMult = 0)
 {
 	for (var i = 0; i < array_length(cards); i++)
 	{
 		var cardRenderer = cards[i]
 		
 		if (cardRenderer.onTop) array_push(oInterface.cardsOnTop, cardRenderer)
-		else draw_surface(cardRenderer.surface, cardRenderer.clampedX-cardRenderer.width/2, cardRenderer.clampedY-cardRenderer.height/2)
+		else
+		{
+			if (cardRenderer.holdState == CARD_STATE.HELD) yOffMult = 0 // Bullshit workaround
+			
+			var xx = (cardRenderer.clampedX-cardRenderer.width/2) + (xOffMult * GUI_W)
+			var yy = (cardRenderer.clampedY-cardRenderer.height/2) + (yOffMult * GUI_H)
+			draw_surface(cardRenderer.surface, round(xx), round(yy))
+		}
 	}
 }
 

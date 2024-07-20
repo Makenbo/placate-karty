@@ -3,10 +3,13 @@ application_surface_draw_enable(false)
 
 randomize()
 
+#macro TESTING true
+
 // GUI -------------------------------------------------------------------------------
 #macro INTERACT_PRESS mouse_check_button_pressed(mb_left)
 #macro INTERACT_HOLD mouse_check_button(mb_left)
 #macro INTERACT_RELEASED mouse_check_button_released(mb_left)
+#macro SECONDARY_ACTION_PRESS mouse_check_button_pressed(mb_right)
 #macro CANCEL mouse_check_button_pressed(mb_right)
 #macro PASTE keyboard_check(vk_control) and keyboard_check_pressed(ord("V"))
 
@@ -14,8 +17,6 @@ randomize()
 #macro TEXT_OFF 10
 
 #macro TWO_BYTES 65535 // Starting from 0
-
-global.holdingCard = false
 
 enum MENU
 {
@@ -25,7 +26,8 @@ enum MENU
 	MATCH
 }
 
-uiState = MENU.MULTIPLAYER_SETUP
+uiState = MENU.MAIN
+if (TESTING) uiState = MENU.MULTIPLAYER_SETUP
 
 titleFont = font_add("external-fonts/arial.ttf", 100, false, false, 32, 128)
 font_enable_sdf(titleFont, true)
@@ -71,51 +73,76 @@ pageTurner = [	new Button("<", function(){UpdateCollection(RENDERER.TURN_LEFT)})
 			 ]
 #macro cardsPerPage 8
 page = 0
+playerReady = false
+playersReady = 0
 				 
 collectionRenders = []
 deckRenders = []
 cardsOnTop = []
 
 // Multiplayer setup menu -------------------------------------------------------------------------------
-multiplayerMenu = [	new Button("Start 2 player match", StartMatch,,),
+multiplayerMenu = [
+					new Button("Not ready", PlayerReady, "The match will begin when both players are ready",false,,c_red),
 					//new Button("Start 4 player match",,,false),
-					new Button("Select deck", function(){LoadDeckFromFile(DECK.MATCH)}),
-					new Button("Join server from file", ConnectToNetworkFromFile),
-					new Button("Host server", CreateNetwork),
+					new Button("Select deck", function(){LoadDeckFromFile(DECK.MATCH)}, "Choose a saved deck to use in the match"),
+					new Button("Connect to server from file", ConnectToNetworkFromFile, "Join someone's server based on their server address saved in a file.\nYou can also connect by copying the address and pressing Ctrl+V in this window"),
+					new Button("Host server", CreateNetwork, "Create and join local server"),
 					new Button("Return to menu", function(){ChangeMenuState(MENU.MAIN)})
 				  ]
-
-myDeck = []
 				  
 // The Match -------------------------------------------------------------------------------
 interactableAreas = [
 						new InteractableArea(.9, .3, 150, 80, INTERACTION_AREA.DECK, "Deck", .8, false),
 						new InteractableArea(.9, .7, 150, 80, INTERACTION_AREA.DECK, "Deck", .8, true),
-						new InteractableArea(0, .95, 150, 500, INTERACTION_AREA.HAND, "")
+						new InteractableArea(.2, .9, 175, 670, INTERACTION_AREA.HAND, "") // Hand area
 					]
 					
 friendlyHand = []
 opponentHand = []
+#macro HAND_OFF_DEFAULT .11
+handOffY = HAND_OFF_DEFAULT
+handOffTargetY = handOffY
+
 cardsOnBoard = []
 matchUI =	[
 				new Button("Take turn",,,,,c_white),
 				new Button("End match")
 			]
+myDeck = []
+myDeckBackup = []
+			
+			
+holdingCard = false
+holdingCardIndex = -1
+holdingCardFromBoard = false
+holdingCardPrev = oInterface.holdingCard
+hoveringCard = false
+
 
 // Networking
 #macro NETWORK_PORT 6510
 #macro MAX_PLAYERS 2
-#macro CARD_HAND_SCALE .6
+#macro CARD_HAND_SCALE .5
 #macro CARD_ON_BOARD_SCALE .5
+
+cardMoveLerpSpd = .1
+#macro CARD_LERP_LERP .2
+#macro MOVE_EPSILON .001
+cardPrevMultX = 0
+cardPrevMultY = 0
 
 enum CLIENT_MSG
 {
+	PLAYER_READY,
 	MATCH_START,
+	
 	DRAW_CARD,
 	MOVE_CARD,
-	CARD_CHANGE_STATE,
-	CARD_HOVERED,
-	DESTROY_CARD
+	CARD_CHANGE_VISIBILITY,
+	
+	CARD_BOARD_TO_HAND,	//
+	CARD_HAND_TO_BOARD, // These move card between arrays
+	CARD_HAND_TO_HAND   //
 }
 
 hostedServer = -1
@@ -129,6 +156,9 @@ clientStatus = "Not connected"
 
 clientBuffer = buffer_create(2, buffer_grow, 1)
 serverBuffer = buffer_create(2, buffer_grow, 1)
+
+movePacketFrequency = 4
+movePacketTimer = 0
 
 p1x = 100
 p2x = 300

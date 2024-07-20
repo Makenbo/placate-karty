@@ -6,6 +6,8 @@ function CreateNetwork()
 		hostedServer = network_create_server(network_socket_tcp, NETWORK_PORT, MAX_PLAYERS)
 		hostStatus = $"{playersOnNetwork}/{MAX_PLAYERS} joined"
 		playersConnected = true
+		
+		ConnectToNetwork("127.0.0.1") // Somehow works? lol idk
 	}
 }
 

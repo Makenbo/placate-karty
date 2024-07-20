@@ -32,6 +32,15 @@ enum ELEMENT_DIR
 	HORIZONTAL
 }
 
+function CardUpdatePositions(elements)
+{
+	for (var i = 0; i < array_length(elements); i++)
+	{
+		elements[i].RecalculateSize()
+		elements[i].UpdatePositionOnScalars()
+	}
+}
+
 function ElementsSetPositions(elements, multX = .5, multY = .2, dir = ELEMENT_DIR.VERTICAL, alignType = ALIGN.MIDDLE, maxPerLine = -1, maxTotal = infinity, padding = PADDING)
 {
 	var elementAmount = min(maxTotal, array_length(elements))
@@ -172,8 +181,11 @@ function InteractableArea(xMult_, yMult_, height_, width_, interaction_, text_ =
 	yMult = yMult_
 	xPos = GUI_W * xMult
 	yPos = GUI_H * yMult
+	defaultHeight = height_
+	defaultWidth = width_
 	height = height_
 	width = width_
+	
 	text = text_
 	textScale = textScale_
 	interactable = interactable_
@@ -184,9 +196,11 @@ function InteractableArea(xMult_, yMult_, height_, width_, interaction_, text_ =
 	{
 		if (isVisible)
 		{
-			// Update position
+			// Update position and size
 			xPos = GUI_W * xMult
 			yPos = GUI_H * yMult
+			
+			RecalculateSize()
 			
 			// Draw thyself!
 			var drawX = xPos - width/2
@@ -208,7 +222,7 @@ function InteractableArea(xMult_, yMult_, height_, width_, interaction_, text_ =
 		if (point_in_rectangle(mX,mY,drawX,drawY,drawX+width,drawY+height) and interactable)
 		{
 			//Change curor type
-			if (interaction == INTERACTION_AREA.DECK and global.holdingCard == false)
+			if (interaction == INTERACTION_AREA.DECK and oInterface.holdingCard == false)
 				if (oInterface.cursorImage != cr_handpoint)
 					oInterface.cursorImage = cr_handpoint
 			
@@ -220,11 +234,13 @@ function InteractableArea(xMult_, yMult_, height_, width_, interaction_, text_ =
 				draw_set_alpha(1)
 			}
 			
+			if (interaction == INTERACTION_AREA.HAND) oInterface.handOffTargetY = 0
+			
 			// Big interaction switches
 			if (INTERACT_PRESS)
 			{
 				// Draw a card
-				if (interaction == INTERACTION_AREA.DECK and global.holdingCard == false and array_length(oInterface.myDeck) > 0)
+				if (interaction == INTERACTION_AREA.DECK and oInterface.holdingCard == false and array_length(oInterface.myDeck) > 0)
 				{
 					var card = array_pop(oInterface.myDeck).card
 					var cardID = array_length(oInterface.friendlyHand)
@@ -233,12 +249,79 @@ function InteractableArea(xMult_, yMult_, height_, width_, interaction_, text_ =
 					DrawHand()
 					ClientDrewCard()
 				}
+				else if (interaction == INTERACTION_AREA.HAND and oInterface.holdingCard) // Return card to hand
+				{
+					oInterface.holdingCard = false
+					var heldCard = oInterface.holdingCardFromBoard ? oInterface.cardsOnBoard[oInterface.holdingCardIndex] : oInterface.friendlyHand[oInterface.holdingCardIndex]
+					if (!oInterface.holdingCardFromBoard) // From hand to hand
+					{
+						with (heldCard)
+						{
+							interaction = CARD_INTERACTION.IN_HAND
+							holdState = CARD_STATE.STATIC
+							scale = CARD_HAND_SCALE
+						}
+						ClientChangeCardArray(CLIENT_MSG.CARD_HAND_TO_HAND, heldCard.networkID)
+					}
+					else // From board to hand
+					{
+						var cardID = array_length(oInterface.friendlyHand)
+						array_delete(oInterface.cardsOnBoard, oInterface.holdingCardIndex, 1)
+						UpdateCardArrIndexes(oInterface.cardsOnBoard)
+						var renderer = new CardRenderer(heldCard.idd, CARD_INTERACTION.IN_HAND, CARD_DRAW_TYPE.FULL, CARD_HAND_SCALE, cardID)
+						array_push(oInterface.friendlyHand, renderer)
+						oInterface.holdingCard = false
+						oInterface.hoveringCard = false
+						ClientChangeCardArray(CLIENT_MSG.CARD_BOARD_TO_HAND, heldCard.networkID)
+					}
+					DrawHand()
+				}
+			}
+		}
+		else
+		{
+			if (interaction == INTERACTION_AREA.HAND and (!oInterface.hoveringCard or oInterface.holdingCard))
+			{
+				oInterface.handOffTargetY = HAND_OFF_DEFAULT
+				
+				if (INTERACT_PRESS and oInterface.holdingCardPrev) // Place card on board
+				{
+					if (!oInterface.holdingCardFromBoard) // From hand to board
+					{
+						var cardID = array_length(oInterface.cardsOnBoard)
+						var card = oInterface.friendlyHand[oInterface.holdingCardIndex]
+						array_delete(oInterface.friendlyHand, oInterface.holdingCardIndex, 1)
+						UpdateCardArrIndexes(oInterface.friendlyHand)
+						var renderer = new CardRenderer(card.idd, CARD_INTERACTION.ON_BOARD, CARD_DRAW_TYPE.FULL, CARD_ON_BOARD_SCALE, cardID)
+						renderer.xPos = card.xPos
+						renderer.yPos = card.yPos
+						renderer.UpdatePositionScalars()
+						array_push(oInterface.cardsOnBoard, renderer)
+						oInterface.holdingCard = false
+						oInterface.hoveringCard = false
+						ClientChangeCardArray(CLIENT_MSG.CARD_HAND_TO_BOARD, card.networkID)
+						DrawHand()
+						ClientMoveCard(renderer.xPos, renderer.yPos, renderer.networkID, renderer.interaction)
+						//RedrawElements(oInterface.cardsOnBoard, false)
+						renderer.Draw(true)
+					}
+					else // From board to board
+					{
+						var card = oInterface.cardsOnBoard[oInterface.holdingCardIndex]
+						card.interaction = CARD_INTERACTION.ON_BOARD	// Proč jsou tyhle 2 řádky potřeba??? idk ale jsou??
+						card.UpdatePositionScalars()					//
+						ClientMoveCard(card.xPos, card.yPos, card.networkID, card.interaction)
+						oInterface.holdingCard = false
+					}
+				}
 			}
 		}
 	}
 	
 	function RecalculateSize()
 	{
+		width = defaultWidth * WINDOW_SCALAR
+		height = defaultHeight * WINDOW_SCALAR
 	}
 }
 

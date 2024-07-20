@@ -17,14 +17,20 @@ function DrawPreviewDeck()
 	RedrawCards(oInterface.myDeck)
 }
 
+function DrawBoard()
+{
+	CardUpdatePositions(cardsOnBoard)
+	RedrawElements(cardsOnBoard, false)
+}
+
 function DrawHand()
 {
-	ElementsSetPositions(oInterface.friendlyHand, .1, .96, ELEMENT_DIR.HORIZONTAL, ALIGN.MIDDLE,,,2)
+	ElementsSetPositions(oInterface.friendlyHand, .09, .97, ELEMENT_DIR.HORIZONTAL, ALIGN.MIDDLE,,,-1)
 	RedrawElements(oInterface.friendlyHand, false)
 }
 
 function DrawOpponentHand()
 {
-	ElementsSetPositions(oInterface.opponentHand, .1, .2, ELEMENT_DIR.HORIZONTAL, ALIGN.MIDDLE,,,2)
+	ElementsSetPositions(oInterface.opponentHand, .1, .2, ELEMENT_DIR.HORIZONTAL, ALIGN.MIDDLE,,,-1)
 	RedrawElements(oInterface.opponentHand, false)
 }

@@ -9,6 +9,10 @@ switch (uiState)
 	case MENU.MULTIPLAYER_SETUP:
 		DrawPreviewDeck()
 		break
+		
+	case MENU.MATCH:
+		DrawOpponentHand() // Temp
+		break
 }
 
 

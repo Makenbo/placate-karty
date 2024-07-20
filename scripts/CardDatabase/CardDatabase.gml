@@ -94,20 +94,30 @@ enum DECK
 	MATCH
 }
 
-function LoadDeckFromFile(target = DECK.COLLECTION)
+function LoadDeckFromFile(target = DECK.COLLECTION, msg = "Load deck")
 {
-	var location = get_open_filename_ext("Deck|*.txt", "", $"{working_directory}decks", "Load deck")
+	var location = get_open_filename_ext("Deck|*.txt", "", $"{working_directory}decks", msg)
 	if (location == "") return;
 	var file = file_text_open_read(location)
 
 		FreeDeckRenderer()
 		for (var i = 0; !file_text_eof(file); i++)
 		{
+			// Read ID and amount
 			var cardID = file_text_read_string(file)
 			file_text_readln(file)
 			var amount = file_text_read_real(file)
 			file_text_readln(file)
 			
+			// Safety check
+			if (!ds_map_exists(oInterface.cardDatabase, cardID))
+			{
+				file_text_close(file)
+				show_message($"Loading failed.\nA card identified as {cardID} isn't downloaded or doesn't exist.\nMaybe try downloading the CSVs again")
+				return;
+			}
+			
+			// Setup renderer
 			var interaction = CARD_INTERACTION.IN_DECK
 			if (target == DECK.MATCH) interaction = CARD_INTERACTION.STATIC
 			var insert = new CardRenderer(cardID, interaction, CARD_DRAW_TYPE.COMPACT)
