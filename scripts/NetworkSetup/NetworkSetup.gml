@@ -15,10 +15,22 @@ function ConnectToNetwork(address)
 {
 	with (oInterface)
 	{
+		if (connectedToNetwork and hostedServer != -1 and playersOnNetwork > 1)
+		{
+			show_message("You can't disconnect a server you're hosting, when you have more players on it.")
+			return;
+		}
 		var inputIsAddress = network_connect_async(mySocket, address, NETWORK_PORT) >= 0
-		if (connectedToNetwork) { clientStatus = $"Disconnected from server"; connectedToNetwork = false; return; }
-		if (!inputIsAddress) clientStatus = $"Input is not an address: {address}"
+		if (connectedToNetwork) { clientStatus = $"Disconnected from server"; connectedToNetwork = false }
+		else if (!inputIsAddress) clientStatus = $"Input is not an address: {address}"
 		else clientStatus = $"Connecting to {address}"
+		
+		if (!connectedToNetwork and playerReady)
+		{
+			multiplayerMenu[0].name = "Not ready"
+			multiplayerMenu[0].color = c_red
+			PlayerReady()
+		}
 	}
 }
 

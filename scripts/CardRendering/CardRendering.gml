@@ -301,7 +301,7 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 			
 			if (interaction == CARD_INTERACTION.IN_HAND and drawType != CARD_DRAW_TYPE.BACKFACE) oInterface.handOffTargetY = 0
 			
-			if (INTERACT_PRESS and drawType != CARD_DRAW_TYPE.BACKFACE)
+			if (INTERACT_PRESS and drawType != CARD_DRAW_TYPE.BACKFACE and oInterface.myTurn)
 			{
 				followTarget = false
 				

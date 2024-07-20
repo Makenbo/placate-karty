@@ -21,17 +21,53 @@ function ClientReceivedPacket(buffer)
 		case CLIENT_MSG.PLAYER_READY:
 			var isReady = buffer_read(buffer, buffer_bool)
 			if (isReady) playersReady++
-			else playerReady--
+			else playersReady--
 			if (playersReady == MAX_PLAYERS) 
 			{
-				ChangeMenuState(MENU.MATCH)
-				MatchSetup()
+				if (!playerReady)
+				{
+					playersReady--
+				}
+				else
+				{
+					if (hostedServer != -1 and playersOnNetwork == MAX_PLAYERS)
+						StartMatch()
+					//ChangeMenuState(MENU.MATCH)
+					//MatchSetup()
+				}
 			}
 			break
 		
 		case CLIENT_MSG.MATCH_START:
-			ChangeMenuState(MENU.MATCH)
-			MatchSetup()
+			if (playerReady)
+			{
+				ChangeMenuState(MENU.MATCH)
+				MatchSetup()
+			}
+			else
+			{
+				ClientPlayerReady()
+			}
+			break
+			
+		case CLIENT_MSG.CHANGE_TURN:
+			var enemyTurn = buffer_read(buffer, buffer_bool)
+			with (oInterface)
+			{
+				if (enemyTurn) ButtonEnemyTurn()
+				else ButtonMyTurn()
+			}
+			break
+			
+		case CLIENT_MSG.VOTE_TO_END:
+			var voteToEnd = buffer_read(buffer, buffer_bool)
+			with (oInterface)
+			{
+				if (voteToEnd) votesToEnd++
+				else votesToEnd--
+				
+				if (votesToEnd == MAX_PLAYERS) EndMatch()
+			}
 			break
 			
 		case CLIENT_MSG.DRAW_CARD:
@@ -107,6 +143,8 @@ function ClientReceivedPacket(buffer)
 			break
 			
 		case CLIENT_MSG.CARD_HAND_TO_HAND:
+			index = buffer_read(buffer, buffer_u8)
+			oInterface.opponentHand[index].followTarget = false
 			DrawOpponentHand()
 			break
 	}

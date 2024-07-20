@@ -1,14 +1,20 @@
-function PlayerReady()
+function PlayerReady(sendPacket = true)
 {
 	if (TESTING)
 	{
-		StartMatch()
+		ChangeMenuState(MENU.MATCH)
+		MatchSetup()
 		return;
 	}
 	
 	if (array_length(oInterface.myDeck) == 0)
 	{
-		LoadDeckFromFile(DECK.MATCH, "Select a deck before starting")
+		var loadedDeck = LoadDeckFromFile(DECK.MATCH, "Select a deck before starting")
+		if (!loadedDeck)
+		{
+			show_message("You need to choose a deck before being ready")
+			return;
+		}
 	}
 	
 	with (oInterface)
@@ -20,11 +26,6 @@ function PlayerReady()
 			multiplayerMenu[0].color = c_aqua
 			multiplayerMenu[0].name = "Ready"
 			playersReady++
-			if (playersReady == MAX_PLAYERS)
-			{
-				ChangeMenuState(MENU.MATCH)
-				MatchSetup()
-			}
 		}
 		else
 		{
@@ -32,13 +33,25 @@ function PlayerReady()
 			multiplayerMenu[0].name = "Not ready"
 			playersReady--
 		}
-		RedrawElements(multiplayerMenu, true, true)
 		
-		buffer_seek(clientBuffer, buffer_seek_start, 0)
-		buffer_write(clientBuffer, buffer_u8, CLIENT_MSG.PLAYER_READY)
-		buffer_write(clientBuffer, buffer_bool, playerReady)
-		network_send_packet(mySocket, clientBuffer, buffer_tell(clientBuffer))
+		if (surface_exists(guiSurf)) // If window is not focused before pressing button, the surf wont exist
+			RedrawElements(multiplayerMenu, true, true)
+		
+		if (sendPacket) ClientPlayerReady()
+		
+		if (playerReady and playersReady == MAX_PLAYERS and hostedServer != -1)
+		{
+			StartMatch()
+		}
 	}
+}
+
+function ClientPlayerReady()
+{
+	buffer_seek(clientBuffer, buffer_seek_start, 0)
+	buffer_write(clientBuffer, buffer_u8, CLIENT_MSG.PLAYER_READY)
+	buffer_write(clientBuffer, buffer_bool, playerReady)
+	network_send_packet(mySocket, clientBuffer, buffer_tell(clientBuffer))
 }
 
 function StartMatch()
@@ -72,7 +85,7 @@ function MatchSetup()
 				}
 			}
 		}
-		myDeckBackup = array_copy(myDeckBackup, 0, myDeck, 0, array_length(myDeck))
+		array_copy(myDeckBackup, 0, myDeck, 0, array_length(myDeck))
 		myDeck = array_shuffle(myDeck)
 	}
 }
@@ -143,18 +156,120 @@ function ClientChangeCardArray(transitionMsg, networkID)
 	{
 		buffer_seek(clientBuffer, buffer_seek_start, 0)
 		buffer_write(clientBuffer, buffer_u8, transitionMsg)
-		if (transitionMsg != CLIENT_MSG.CARD_HAND_TO_HAND)
-			buffer_write(clientBuffer, buffer_u8, networkID)
+		buffer_write(clientBuffer, buffer_u8, networkID)
 		
 		network_send_packet(mySocket, clientBuffer, buffer_tell(clientBuffer))
 	}
 }
 
+function PassTurn()
+{
+	with (oInterface)
+	{
+		if (matchUI[0].color == c_white) ButtonMyTurn()
+		else if (myTurn) ButtonEnemyTurn()
+		ClientPassTurn()
+	}
+}
+
+function ButtonEnemyTurn()
+{
+	with (oInterface)
+	{
+		myTurn = false
+		matchUI[0].name = "Enemy turn"
+		matchUI[0].color = c_red
+		matchUI[0].clickable = false
+		RedrawMatchGUI()
+	}
+}
+
+function ButtonMyTurn()
+{
+	with (oInterface)
+	{
+		myTurn = true
+		matchUI[0].name = "Your turn"
+		matchUI[0].color = c_aqua
+		matchUI[0].clickable = true
+		RedrawMatchGUI()
+	}
+}
+
+function ClientPassTurn()
+{
+	with (oInterface)
+	{
+		buffer_seek(clientBuffer, buffer_seek_start, 0)
+		buffer_write(clientBuffer, buffer_u8, CLIENT_MSG.CHANGE_TURN)
+		buffer_write(clientBuffer, buffer_bool, myTurn)
+		network_send_packet(mySocket, clientBuffer, buffer_tell(clientBuffer))
+	}
+}
 
 
+function VoteToEndMatch()
+{
+	with (oInterface)
+	{
+		votingToEnd = !votingToEnd
+		
+		if (votingToEnd)
+		{
+			votesToEnd++
+			matchUI[1].name = "Voting to end"
+			matchUI[1].color = c_aqua
+		}
+		else
+		{
+			votesToEnd--
+			matchUI[1].name = "End match"
+			matchUI[1].color = c_yellow
+		}
+		
+		RedrawMatchGUI()
+		ClientVotesToEnd()
+		
+		if (votesToEnd == MAX_PLAYERS)
+		{
+			EndMatch()
+		}
+	}
+}
 
+function ClientVotesToEnd()
+{
+	with (oInterface)
+	{
+		buffer_seek(clientBuffer, buffer_seek_start, 0)
+		buffer_write(clientBuffer, buffer_u8, CLIENT_MSG.VOTE_TO_END)
+		buffer_write(clientBuffer, buffer_bool, votingToEnd)
+		network_send_packet(mySocket, clientBuffer, buffer_tell(clientBuffer))
+	}
+}
 
-
+function EndMatch()
+{
+	with (oInterface)
+	{
+		array_copy(myDeck, 0, myDeckBackup, 0, array_length(myDeckBackup))
+		playerReady = false
+		playersReady = 0
+		multiplayerMenu[0].color = c_red
+		multiplayerMenu[0].name = "Not ready"
+		cardsOnBoard = []
+		friendlyHand = []
+		opponentHand = []
+		votingToEnd = false
+		votesToEnd = 0
+		myTurn = false
+		matchUI = [	// Stupi aah copy & paste
+			new Button("Take turn", PassTurn,,,1.2,c_white),
+			new Button("End match", VoteToEndMatch, "Both players need to agree to end match", true, 1.1)
+		  ]
+		ChangeMenuState(MENU.MULTIPLAYER_SETUP)
+	}
+}
 
 
 

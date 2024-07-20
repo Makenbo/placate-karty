@@ -27,9 +27,7 @@ if (!surface_exists(guiSurf))
 			break
 
 		case MENU.MATCH:
-			ElementsSetPositions(matchUI, .9,.5,,ALIGN.MIDDLE,,,250 * WINDOW_SCALAR)
-			RedrawElements(matchUI)
-			RedrawElements(interactableAreas)
+			RedrawMatchGUI()
 			DrawBoard()
 			DrawHand()
 			DrawOpponentHand()
@@ -78,6 +76,7 @@ switch (uiState)
 		UpdateElements(myDeck)
 		draw_set_halign(fa_left)
 		if (connectedToNetwork) draw_text(multiplayerMenu[0].xPos+multiplayerMenu[0].width+PADDING, multiplayerMenu[0].yPos+multiplayerMenu[0].height/2, $"Players ready: {playersReady}/{MAX_PLAYERS}")
+		//if (connectedToNetwork) draw_text(multiplayerMenu[1].xPos+multiplayerMenu[1].width+PADDING, multiplayerMenu[1].yPos+multiplayerMenu[1].height/2, $"Player ready: {playerReady}")
 		draw_text(multiplayerMenu[2].xPos+multiplayerMenu[2].width+PADDING, multiplayerMenu[2].yPos+multiplayerMenu[2].height/2, clientStatus)
 		draw_text(multiplayerMenu[3].xPos+multiplayerMenu[3].width+PADDING, multiplayerMenu[3].yPos+multiplayerMenu[3].height/2, hostStatus)
 		//if (hostedServer != -1)

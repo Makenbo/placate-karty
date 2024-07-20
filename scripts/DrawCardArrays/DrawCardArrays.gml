@@ -34,3 +34,10 @@ function DrawOpponentHand()
 	ElementsSetPositions(oInterface.opponentHand, .1, .2, ELEMENT_DIR.HORIZONTAL, ALIGN.MIDDLE,,,-1)
 	RedrawElements(oInterface.opponentHand, false)
 }
+
+function RedrawMatchGUI()
+{
+	ElementsSetPositions(matchUI, .9,.5,,ALIGN.MIDDLE,,,250 * WINDOW_SCALAR)
+	RedrawElements(matchUI,,true)
+	RedrawElements(interactableAreas)
+}

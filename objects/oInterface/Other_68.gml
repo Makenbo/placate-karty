@@ -20,6 +20,12 @@ switch (type)
 		socket = ds_map_find_value(async_load, "socket")
 		ds_list_add(socketList, socket)
 		hostStatus = $"{++playersOnNetwork}/{MAX_PLAYERS} joined"
+		
+		if (playerReady)
+		{
+			ClientPlayerReady()
+		}
+		
 		show_debug_message("Player Connected")
 		break
 
@@ -28,6 +34,11 @@ switch (type)
 		ds_list_delete(socketList, ds_list_find_index(socketList, socket))
 		hostStatus = $"{--playersOnNetwork}/{MAX_PLAYERS} joined"
 		show_debug_message("Player Disconnected")
+		
+		if (!playerReady and playersReady == 1) // Pro 4 player matche tenhle kód musí pryč
+		{
+			playersReady = 0
+		}
 		break
 		
 	case network_type_data:

@@ -94,14 +94,13 @@ function ElementsSetPositions(elements, multX = .5, multY = .2, dir = ELEMENT_DI
 
 #macro UNCLICKABLE_ALPHA .5
 
-function Button(name_ = "temp", func_ = function(){}, description_ = "", clickable_ = true, width_ = -1, color_ = c_yellow) : GuiElement() constructor
+function Button(name_ = "temp", func_ = function(){}, description_ = "", clickable_ = true, widthScalar_ = 1, color_ = c_yellow) : GuiElement() constructor
 {
 	variable = false
 	name = name_
 	description = description_
 	height = fontSize
-	if (width_ == -1) width = string_width(name) + PADDING
-	else width = width_
+	width = (string_width(name) + PADDING) * widthScalar_
 	func = func_
 	clickable = clickable_
 	alpha = clickable ? 1 : UNCLICKABLE_ALPHA
@@ -260,6 +259,7 @@ function InteractableArea(xMult_, yMult_, height_, width_, interaction_, text_ =
 							interaction = CARD_INTERACTION.IN_HAND
 							holdState = CARD_STATE.STATIC
 							scale = CARD_HAND_SCALE
+							followTarget = false
 						}
 						ClientChangeCardArray(CLIENT_MSG.CARD_HAND_TO_HAND, heldCard.networkID)
 					}

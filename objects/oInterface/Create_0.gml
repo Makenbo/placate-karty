@@ -3,7 +3,7 @@ application_surface_draw_enable(false)
 
 randomize()
 
-#macro TESTING true
+#macro TESTING false
 
 // GUI -------------------------------------------------------------------------------
 #macro INTERACT_PRESS mouse_check_button_pressed(mb_left)
@@ -73,8 +73,6 @@ pageTurner = [	new Button("<", function(){UpdateCollection(RENDERER.TURN_LEFT)})
 			 ]
 #macro cardsPerPage 8
 page = 0
-playerReady = false
-playersReady = 0
 				 
 collectionRenders = []
 deckRenders = []
@@ -89,6 +87,8 @@ multiplayerMenu = [
 					new Button("Host server", CreateNetwork, "Create and join local server"),
 					new Button("Return to menu", function(){ChangeMenuState(MENU.MAIN)})
 				  ]
+playerReady = false
+playersReady = 0
 				  
 // The Match -------------------------------------------------------------------------------
 interactableAreas = [
@@ -104,13 +104,16 @@ handOffY = HAND_OFF_DEFAULT
 handOffTargetY = handOffY
 
 cardsOnBoard = []
-matchUI =	[
-				new Button("Take turn",,,,,c_white),
-				new Button("End match")
-			]
+matchUI = [
+			new Button("Take turn", PassTurn,,,1.2,c_white),
+			new Button("End match", VoteToEndMatch, "Both players need to agree to end match", true, 1.1)
+		  ]
+			
 myDeck = []
 myDeckBackup = []
 			
+votesToEnd = 0
+votingToEnd = false
 			
 holdingCard = false
 holdingCardIndex = -1
@@ -118,6 +121,7 @@ holdingCardFromBoard = false
 holdingCardPrev = oInterface.holdingCard
 hoveringCard = false
 
+myTurn = false
 
 // Networking
 #macro NETWORK_PORT 6510
@@ -135,6 +139,8 @@ enum CLIENT_MSG
 {
 	PLAYER_READY,
 	MATCH_START,
+	CHANGE_TURN,
+	VOTE_TO_END,
 	
 	DRAW_CARD,
 	MOVE_CARD,

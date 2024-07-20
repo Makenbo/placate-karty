@@ -97,7 +97,7 @@ enum DECK
 function LoadDeckFromFile(target = DECK.COLLECTION, msg = "Load deck")
 {
 	var location = get_open_filename_ext("Deck|*.txt", "", $"{working_directory}decks", msg)
-	if (location == "") return;
+	if (location == "") return false;
 	var file = file_text_open_read(location)
 
 		FreeDeckRenderer()
@@ -141,5 +141,34 @@ function LoadDeckFromFile(target = DECK.COLLECTION, msg = "Load deck")
 	
 	if (target == DECK.COLLECTION) DrawCollectionDeck()
 	else DrawPreviewDeck()
+	
+	return true
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
