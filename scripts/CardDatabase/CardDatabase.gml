@@ -74,6 +74,7 @@ function SortDeck()
 function SaveCurrentDeckToFile()
 {
 	var location = get_save_filename_ext("Deck|*.txt", "MyDeck", $"{working_directory}decks", "Save deck")
+	if (location == "") return false;
 	var file = file_text_open_write(location)
 	
 		var arrLen = array_length(oInterface.deckRenders)
@@ -97,8 +98,9 @@ enum DECK
 function LoadDeckFromFile(target = DECK.COLLECTION, msg = "Load deck")
 {
 	var location = get_open_filename_ext("Deck|*.txt", "", $"{working_directory}decks", msg)
-	if (location == "") return false;
+	if (location == "") return false
 	var file = file_text_open_read(location)
+	if (file == -1) return false
 
 		FreeDeckRenderer()
 		for (var i = 0; !file_text_eof(file); i++)

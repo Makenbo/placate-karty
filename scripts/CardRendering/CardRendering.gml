@@ -301,7 +301,7 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 			
 			if (interaction == CARD_INTERACTION.IN_HAND and drawType != CARD_DRAW_TYPE.BACKFACE) oInterface.handOffTargetY = 0
 			
-			if (INTERACT_PRESS and drawType != CARD_DRAW_TYPE.BACKFACE and oInterface.myTurn)
+			if (INTERACT_PRESS and drawType != CARD_DRAW_TYPE.BACKFACE)
 			{
 				followTarget = false
 				
@@ -344,9 +344,9 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 							oInterface.hoveringCard = false
 						}
 						break
-						
+					
 					case CARD_INTERACTION.IN_HAND:
-						if (!oInterface.holdingCard and !oInterface.holdingCardPrev)
+						if (oInterface.myTurn and !oInterface.holdingCard and !oInterface.holdingCardPrev)
 						{
 							interaction = CARD_INTERACTION.HOLDING
 							holdState = CARD_STATE.HELD
@@ -357,7 +357,7 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 						break
 						
 					case CARD_INTERACTION.ON_BOARD:
-						if (!oInterface.holdingCard and !oInterface.holdingCardPrev)
+						if (oInterface.myTurn and !oInterface.holdingCard and !oInterface.holdingCardPrev)
 						{
 							interaction = CARD_INTERACTION.HOLDING
 							holdState = CARD_STATE.HELD

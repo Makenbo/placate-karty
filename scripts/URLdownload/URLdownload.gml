@@ -8,10 +8,11 @@ function DownloadCSV()
 		
 		// Download the files from links from selected text file
 		var links = get_open_filename_ext("text file|*.txt", "", working_directory, "Title")
-		if (links == "") return;
-		
+		if (links == "") return;	// Podle dokumentace by mělo fungovat ale nefunguje bruh
+									// Ve výsledku na tom nezáleží, protože file nepůjde načíst
 		toDownload = 0
 		var file = file_text_open_read(links)
+		if (file == -1) return;
 		for (var i = 0; !file_text_eof(file); i++)
 		{
 			var url = file_text_readln(file)
