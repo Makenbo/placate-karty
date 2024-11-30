@@ -42,7 +42,7 @@ cursorImage = cr_default
 mainMenu = [
 			new Button("Multiplayer", function(){ChangeMenuState(MENU.MULTIPLAYER_SETUP)}),
 			new Button("Collection", function(){UpdateCollection(RENDERER.ENTER_COLLECTION)}),
-			new Button("Download CSV", DownloadCSV, "Downloads Google sheet CSV to memory"),
+			new Button("Download Cards", DownloadCSV, "Downloads Google sheet CSV to memory"),
 			new Button("Exit", function(){game_end()}, "Exit application")
 		   ]
 

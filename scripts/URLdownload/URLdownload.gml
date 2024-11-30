@@ -2,9 +2,6 @@ function DownloadCSV()
 {
 	with (oInterface)
 	{
-		// Delete existing sheet#.csv files
-		for (var i = 0; file_exists($"sheet{i}.csv"); i++)
-			file_delete($"sheet{i}.csv")
 		
 		// Download the files from links from selected text file
 		var links = get_open_filename_ext("text file|*.txt", "", working_directory, "Title")
@@ -13,6 +10,12 @@ function DownloadCSV()
 		toDownload = 0
 		var file = file_text_open_read(links)
 		if (file == -1) return;
+	
+		// Delete existing sheet#.csv files
+		for (var i = 0; file_exists($"sheet{i}.csv"); i++)
+			file_delete($"sheet{i}.csv")	
+		
+		// Download files from Google sheet links
 		for (var i = 0; !file_text_eof(file); i++)
 		{
 			var url = file_text_readln(file)
