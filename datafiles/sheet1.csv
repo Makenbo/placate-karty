@@ -1,0 +1,26 @@
+JMÉNO_KARTY,CENA,@OBRÁZEK,EXPANZE,TYP,ČÍSLO_KARTY,POPIS,AUTOR,SÍLA,VZÁCNOST
+RADIOAKTIVNÍ ŠVÁB,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,ZVÍŘE,#0001,Infiltrace,Rody,-1,BĚŽNÁ
+DIVOKÝ PES,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,ZVÍŘE,#0002,Infiltrace,Pepík,-3,BĚŽNÁ
+NAKAŽENÁ OBĚŤ,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,,#0003,Infiltrace; Mutagen: -1 síly pro celou stranu země na které se nachází,Pepík,-2,VZÁCNÁ
+SKUPINA PŘEŽIVŠÍCH,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,,#0004,,Pepík,4,BĚŽNÁ
+NÁJEZDNÍCI,5,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,,#0005,,Pepík,7,VZÁCNÁ
+JEDNOTKA OČISTY,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,,#0006,Odstraní jeden Mutagen z libovolného stvoření ve stejné zemi,Pepík,3,EPICKÁ
+KRYSA,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,"ZVÍŘE, KRYSA",#0007,PASIVNÍ: za každou krysu která přijde do země vytvoří 1/1 malou myš,Rody,1,BĚŽNÁ
+VELKÁ KRYSA,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,"ZVÍŘE, KRYSA",#0008,"""PÝSK PÝSK""",Rody,2,BĚŽNÁ
+KRYSÍ GENERÁL,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,"ZVÍŘE, KRYSA",#0009,Přesune přátelské krysy do vedlejší země ,Rody,2,EPICKÁ
+STOKY,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,OČAROVÁNÍ,#0010,V této zemi je neomezený počet krys,Rody,0,BĚŽNÁ
+KRYSÍ ŠPIÓN,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,,#0011,"Vyvolá 2x MALÁ MYŠ, INFILTRACE",Pepík,3,VZÁCNÁ
+KRYSÍ MUTANT,5,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,"ZVÍŘE, KRYSA",#0012,Přidá všem krysám v zemi +1 síly MUTAGEN: Přidá všem krysám v zemi +1 síly,Rody,4,EPICKÁ
+NORMÁLNÍ TÝPEK,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,LIDÉ,#0013,MUTAGEN: +3 SÍLY,Pepík,1,BĚŽNÁ
+ABOMINACE,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,,#0014,MUTAGEN: ZNIČÍ LIBOVOLNÉ STVOŘENÍ SE SILOU 4 A MÉNĚ,Pepík,3,VZÁCNÁ
+KVANTOVÁ KRYSA,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,,#0015,MUTAGEN: VYTVOŘÍ SVOJI VLÁSTNÍ KOPII,Rody,1,EPICKÁ
+DOST DOBRÝ DEALER,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,,#0016,Další zahraný MUTAGEN se aplikuje na všechny stvoření v zemi,Pepík,2,VZÁCNÁ
+SUBJEKT:002,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART] - prozkreslit je to legendárka,AP23,,#0017,"Toto stvoření nemá omezený počet mutagenů, MUTAGEN: +3 síly za každy mutagen",Pepík,0,LEGENDÁRNÍ
+SP3D: GEN IV,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,"JEDNODUCHÁ MAGIE, MUTAGEN",#0018,UMOŽNÍ STVOŘENÍ JEDNOU ZMĚNIT ZEMI,Pepík,0,VZÁCNÁ
+OCELOVÁ KŮŽE,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,"JEDNODUCHÁ MAGIE, MUTAGEN",#0019,JEDNOTKA NEMŮŽE BÝT ZNIČENA,Pepík,0,EPICKÁ
+PODIVNÝ STEROID,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,"JEDNODUCHÁ MAGIE, MUTAGEN",#0020,PŘIDÁ STVOŘENÍ +3 SÍLY ,Pepík,0,VZÁCNÁ
+PODIVNÁ TEKUTINA,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,"JEDNODUCHÁ MAGIE, MUTAGEN",#0021,"""Něco dělat musí...""",Pepík,0,EPICKÁ
+PRÁŠKOVACÍ LETADLO,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,MAGIE,#0022,Odstraní MUTAGEN z VŠECH stvoření v zemi,Pepík,0,VZÁCNÁ
+OPUŠTĚNÁ LABORATOŘ,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART] - prozkreslit je to legendárka,AP23,OČAROVÁNÍ,#0023,AKTIVUJE EFEKTY SPUŠTĚNÉ MUTAGENEM ,Pepík,0,LEGENDÁRNÍ
+NAKAŽENÁ ZEMĚ,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,OČAROVÁNÍ,#0024,VŠECHNY STVOŘENÍ V TÉTO ZEMI DOSTÁVAJÍ -3 SÍLY,Pepík,0,EPICKÁ
+MALÁ MYŠ,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],AP23,"ZVÍŘE, KRYSA",#0025,"""Písk písk""",Rody,1,BĚŽNÁ

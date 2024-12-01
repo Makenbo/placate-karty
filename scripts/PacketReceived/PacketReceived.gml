@@ -52,6 +52,7 @@ function ClientReceivedPacket(buffer)
 			
 		case CLIENT_MSG.CHANGE_TURN:
 			var enemyTurn = buffer_read(buffer, buffer_bool)
+			currentTurn += .5
 			with (oInterface)
 			{
 				if (enemyTurn) ButtonEnemyTurn()

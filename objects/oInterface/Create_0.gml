@@ -92,7 +92,7 @@ playersReady = 0
 				  
 // The Match -------------------------------------------------------------------------------
 interactableAreas = [
-						new InteractableArea(.9, .3, 150, 80, INTERACTION_AREA.DECK, "Deck", .8, false),
+						new InteractableArea(.9, .3, 150, 80, INTERACTION_AREA.DECK, "Kill\narea", .8, false),
 						new InteractableArea(.9, .7, 150, 80, INTERACTION_AREA.DECK, "Deck", .8, true),
 						new InteractableArea(.2, .9, 175, 670, INTERACTION_AREA.HAND, "") // Hand area
 					]
@@ -122,6 +122,8 @@ holdingCardPrev = oInterface.holdingCard
 hoveringCard = false
 
 myTurn = false
+currentTurn = .6 // Later floored, incremented by .5
+				 // Larger than .5 to avoid floating precision problems
 
 // Networking
 #macro NETWORK_PORT 6510

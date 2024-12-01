@@ -308,6 +308,7 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 				var index = 0
 				switch (interaction)
 				{
+					// In collection -------------------------------------------------------
 					case CARD_INTERACTION.COLLECTION:
 						var findDuplicate = function(element, index)
 						{
@@ -345,6 +346,7 @@ function CardRenderer(id_ = -1, interaction_ = CARD_INTERACTION.COLLECTION, draw
 						}
 						break
 					
+					// In match -------------------------------------------------------
 					case CARD_INTERACTION.IN_HAND:
 						if (oInterface.myTurn and !oInterface.holdingCard and !oInterface.holdingCardPrev)
 						{

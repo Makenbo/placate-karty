@@ -191,6 +191,11 @@ function InteractableArea(xMult_, yMult_, height_, width_, interaction_, text_ =
 	interaction = interaction_
 	isVisible = isVisible_
 	
+	if (interaction_ == INTERACTION_AREA.DECK)
+	{
+		
+	}
+	
 	function Draw()
 	{
 		if (isVisible)

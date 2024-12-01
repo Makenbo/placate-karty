@@ -2,7 +2,10 @@ function CreateNetwork()
 {
 	with (oInterface)
 	{
-		if (hostedServer != -1) network_destroy(hostedServer)
+		if (hostedServer != -1)
+		{
+			network_destroy(hostedServer)
+		}
 		hostedServer = network_create_server(network_socket_tcp, NETWORK_PORT, MAX_PLAYERS)
 		hostStatus = $"{playersOnNetwork}/{MAX_PLAYERS} joined"
 		playersConnected = true
@@ -20,6 +23,7 @@ function ConnectToNetwork(address)
 			show_message("You can't disconnect a server you're hosting, when you have more players on it.")
 			return;
 		}
+		
 		var inputIsAddress = network_connect_async(mySocket, address, NETWORK_PORT) >= 0
 		if (connectedToNetwork) { clientStatus = $"Disconnected from server"; connectedToNetwork = false }
 		else if (!inputIsAddress) clientStatus = $"Input is not an address: {address}"

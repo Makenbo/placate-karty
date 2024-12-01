@@ -1,0 +1,67 @@
+JMÉNO_KARTY,CENA,@OBRÁZEK,EXPANZE,TYP,ČÍSLO_KARTY,POPIS,AUTOR,SÍLA,VZÁCNOST
+DRÁČE,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\drak.png,OA23,Drak,#0001,"""Hele, není to moc, ale aspoň je rotomilé.""",Pepík,2,BĚŽNÁ
+ŽUŽLA,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0002,"""To, že nemá zuby nutně neznamená, že nekouše.""",|E|,3,VZÁCNÁ
+VÍLÍ DRÁČEK,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0003,Draci zde mají +2,Pepík,1,BĚŽNÁ
+RUDÝ DRAK,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0004,Zničí VŠECHNY lidi se silou 3 a méně na této zemi,Pepík,2,VZÁCNÁ
+ŘVOUCÍ DRAK,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0005,Zruší VŠECHNY pasivní efekty stvořeních na zemi,Pepík,4,VZÁCNÁ
+DRAK ÚSVITU,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0006,Vyměň dvě svoje země včetně všech vlastních stvoření na nich,Pepík,6,EPICKÁ
+SAFÍROVÝ DRAK,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0007,"""Jestli čumí tvým směrem, zdrhej.""",|E|,4,BĚŽNÁ
+JITŘENKA,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0008,V příštím kole ti přidá +1 many,|E|,2,VZÁCNÁ
+FLEGMA,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0009,"""SUP~""",|E|,3,BĚŽNÁ
+OČISTA,5,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0010,Znič libovolného draka nebo člověka,|E|,3,BĚZNÁ
+ZHOUBA VESNICE,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0011,Lidé na této zemi mají -1 síly,Pepík,3,BĚŽNÁ
+ZŮČTOVÁNÍ,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0012,Znič draka ve vedlejším poli se silou 3 a menší,|E|,4,VZÁCNÁ
+HROZBA,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0013,Přesune všechny lidi v dané zemi do vedlejší.,|E|,4,VZÁCNÁ
+ZIP,5,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0014,Když se na jedné zemi nachází oba - Zip i Zap - zničí vše na nepřátelské straně země,Pepík,4,LEGENDÁRNÍ
+ZAP,5,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0015,Když se na jedné zemi nachází oba - Zip i Zap - zničí vše na nepřátelské straně země,Pepík,4,LEGENDÁRNÍ
+NOČNÍ BĚS,5,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0016,"Kdykoliv se vyskytne na nové zemi, může zničit libovolné stvoření",Pepík,5,LEGENDÁRNÍ
+ZROZENÁ V BOUŘI,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0017,"Stvoření, které nejsou draci na této zemi mají -2 síly",Pepík,4,EPICKÁ
+DIMENZIONÁLNÍ DRAK,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0018,Přemístí libovolné stvoření pod tvou kontrolou na jiné bojiště,Pepík,3,EPICKÁ
+PEKELNÝ LOVEC,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\,OA23,Drak,#0019,Draci zde mají +2 síly pokud je na protější zemi člověk,Pepík,4,VZÁCNÁ
+ZROZEN V OHNI,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0020,Dostává +2 za každé stvoření na protivníkově zemi,Pepík,2,EPICKÁ
+ZROZENÁ V LEDU,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0021,Vrátí do ruky libovolné stvoření,Pepík,2,EPICKÁ
+ZROZEN VE SKÁLE,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0022,"Zničí VŠECHNY očarování, která byla na zem seslána",Pepík,5,EPICKÁ
+KOLOSÁLNÍ DRAK,6,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0023,"""Kolosální drak? To zní jako kolosální problém.""",Pepík,12,BĚŽNÁ
+PRASTARÝ,6,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0024,"Opakuje efekt každého ZROZENÉHO, který přišel do hry před Prastarým",Pepík,6,LEGENDÁRNÍ
+VLÁDCE NEBES,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0025,Posune další zahranou kartu o jednu zemi doprava,Pepík,3,BĚŽNÁ
+MRAKOŠLAP,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0026,Dostává +2 za každého přátelského člověka na této zemi,Pepík,4,EPICKÁ
+FOUŇA,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0027,Dostává +3 za každé stvoření bez schopnosti na této zemi,|E|,0,VZÁCNÁ
+TEMNÁ STRANA ŽUŽLY,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0028,"""Kouše!""",|E|,4,LEGENDÁRNÍ
+DRAKOFRETKA,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0029,"""Fretkodrak?""",|E| + P,2,BĚŽNÁ
+ŽBLUŇK,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0030,"""Kvák?""",|E|,3,BĚŽNÁ
+VIKING,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Lidé,#0031,"""Standardní, mrazuvzdorný, smradlavý viking.""",Pepík,3,BĚŽNÁ
+STAREJ DĚDA,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Lidé,#0032,Nadává a háže protézama - zdrhej!,|E|,1,BĚŽNÁ
+BAŽINBABA,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Lidé,#0033,"""Padejte z mýho močálu, fakani!!!""",|E|,2,BĚŽNÁ
+SABOTÉR,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Lidé,#0034,Každý nepřítel na této zemi má -1 síly,Pepík,2,VZÁCNÁ
+OBŘADNÍ VELEKNĚŽKA,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Lidé,#0035,"Kněžka zkopíruje další očarování na zemi, na které byla zahrána",Pepík,2,EPICKÁ
+LOVEC DRAKŮ,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Drak,#0036,Znič jednoho libovolného draka na této zemi se silou 5 a méně,Pepík,2,EPICKÁ
+NÁČELNÍK,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Lidé,#0037,Lidé v této zemi mají +2 k síle,Pepík,3,VZÁCNÁ
+KROTITELKA,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Lidé,#0038,Ubere všem enemy drakům -1 síly,|E|,4,BĚŽNÁ
+PLAČÍCÍ MIMINO,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Lidé,#0039,"""To nechceš!"" - Všechny stvoření v zemi mají -1 síly.",|E|,5,VZÁCNÁ
+MAMINA,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Lidé,#0040,"Pokud je v poli s MIMINEM, přidá přátelským potvorám +3 (efekt MIMINA zůstavá)",|E|,5,VZÁCNÁ
+BARD,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Lidé,#0041,"Když je tvoje strana země plná, BARD dostavá +4 síly",Pepík,4,EPICKÁ
+SAMOTÁŘ,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Lidé,#0042,Když je tato karta jediná na této straně země SAMOTÁŘ dostavá +6 síly,Pepík,4,EPICKÁ
+DRAČÍ HNÍZDO,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Očarování,#0043,Draci zde mají +2,Pepík,0,VZÁCNÁ
+NOVÁ VESNICE,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Očarování,#0044,V této zemi je maximální kapacita +2,Pepík,0,VZÁCNÁ
+SPÁLENÁ ZEMĚ,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Očarování,#0045,Můžou zde být zahráni pouze draci,Pepík,0,EPICKÁ
+DALEKÉ ZEMĚ,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Očarování,#0046,Karty které stojí 3 a méně síly zde nemohou být zahrány,Pepík,0,VZÁCNÁ
+ČISTÁ ZEMĚ,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Očarování,#0047,Karty které stojí 3 a více síly zde nemohou být zahrány,Pepík,0,BĚŽNÁ
+ROKLE,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Očarování,#0048,Zde může být zahráno právě jedno stvoření,Pepík,0,EPICKÁ
+LÁVOKOULE,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Jednoduchá Magie,#0049,"Zničí libovolné svoření, které má 3 a méně síly",Pepík,0,BĚŽNÁ
+VYKÁZÁNÍ,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Jednoduchá Magie,#0050,"Zničí libovolné svoření, které má 4 a více síly",Pepík,0,VZÁCNÁ
+ZRCADLOVÁ DIMENZE,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Magie,#0051,Kopíruje stvoření na které je zahrána,Pepík,0,EPICKÁ
+VÝHODNÝ OBCHOD,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Jednoduchá Magie,#0052,"Vyměň vlastní stvoření, které se nachází v zemi, kde byla karta seslána s libovolným nepřítelem v libovolné zemi. Vyměněná stvoření musí mít stejnou hodnotu energie.",Pepík,0,VZÁCNÁ
+OVLÁDNUTÍ MYSLI,5,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Magie,#0053,Seber soupeřovi jedno libovolné stvoření,Pepík,0,EPICKÁ
+LEDOVÁ HROBKA,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Jednoduchá Magie,#0054,Zahrej na nepřátelskou zemi a zablokuj jedno pole z maximální kapacity země,Pepík,0,BĚŽNÁ
+FAJNOVÉ HODINKY,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Konstrukt,#0055,"""Stylové hodinky mocného čaroděje""",Pepík,1,LEGENDÁRNÍ
+ZAKŘIVENÍ ČASU,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Magie,#0056,"Pokud byly zahrány FAJNOVÉ HODINKY tak opakuješ aktuální kole se stejným počtem energie jako v kolo, kdy bylo ZAKŘIVENÍ ČASU zahráno ",Pepík,0,LEGENDÁRNÍ
+ARCIMÁG,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,"Lidé, mág",#0057,"Vyber si 2 karty Jednoduché Magie a zahrej je. Magie musí být seslané na stejnou zemi, ve které byl ARCIMÁG zahrán.",Pepík,2,LEGENDÁRNÍ
+RVÁČ,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Lidé,#0058,"Zničí nepřátelské stvoření, které stojí 1 energii",Pepík,1,BĚŽNÁ
+ŠAMPIÓN,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Lidé,#0059,V zemi se počítá síla POUZE toho nejsilnějšího stvoření ,Pepík,5,VZÁCNÁ
+VLASTNÍK ARÉNY,3,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,Lidé,#0060,Pokud byl zahrán do očarované zamě dostaneš 1 energii poute pro toto kolo,Pepík,3,EPICKÁ
+VEJCA,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,"Dinosaur, vejce",#0061,Polož pod tuto kartu kartu draka - za 3 kola ho vyvolej a zaplať jen 2 many. ,|E|,0,LEGENDÁRNÍ
+SKOŘEPKA,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,"Dinosaur, vejce",#0062,Polož pod tuto kartu kartu draka - za 3 kola ho vyvolej a zaplať jen 2 many. ,|E|,0,LEGENDÁRNÍ
+ŽLOUT,1,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,"Dinosaur, vejce",#0063,Polož pod tuto kartu kartu draka - za 3 kola ho vyvolej a zaplať jen 2 many. ,|E|,0,LEGENDÁRNÍ
+PROROK NOVÉHO BOHA,2,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,"Lidé, kult",#0064,Může být zahrán právě v druhém kole. Poté už zahrán být nemůže,Pepík,7,EPICKÁ
+ZVĚSTOVATEL NOVÉHO BOHA,4,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,"Lidé, kult",#0065,"Může být zahrán právě ve čtvrtém kole a pokud byl zahrán ""PROROK NOVÉHO BOHA"". Poté už zahrán být nemůže",Pepík,9,EPICKÁ
+NOEH - NOVÝ BŮH,6,C:\Users\jakub\Desktop\Projects\Placate_karty\Test_1\Obrazky\[ART],OA23,"Lidé, kult",#0066,"Může být zahrán právě v šestém kole a pokud byl zahrán ""PROROK NOVÉHO BOHA""a ""ZVĚSTOVATEL NOVÉHO BOHA"". Poté už zahrán být nemůže",Pepík,15,LEGENDÁRNÍ
